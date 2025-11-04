@@ -1,0 +1,932 @@
+header,description,platforms
+AcUninstallConfirmation,"This event is generated when a Falcon sensor is uninstalled from a host. Important: The Falcon sensor stores events locally in a cache, which enables you to maintain data integrity even if connection to the cloud is interrupted. The cache holds a maximum of 20,000 events and sends them after a host re-establishes a connection with the cloud. However, if you reboot, the cache is lost. This means that if you uninstall a sensor off network and reboot, the cache storing those events is lost, including any AcUninstallConfirmation events.","Windows, macOS, Linux"
+AcUnloadConfirmation,The cloud will respond with this event as acknowledgement that a sensor was uninstalled.,"Windows, macOS, Linux"
+HostInfo,"This event is generated when: A host is turned on or rebooted A new Falcon sensor is installed on a host An existing Falcon sensor is updated A host is turned on or rebooted A new Falcon sensor is installed on a host An existing Falcon sensor is updated This event provides information about the host running the sensor. When searching for information about a specific host, you should use the much faster aid_master search capability instead of searching for HostInfo events This event is generated when: A host is turned on or rebooted A new Falcon sensor is installed on a host An existing Falcon sensor is updated A host is turned on or rebooted A new Falcon sensor is installed on a host An existing Falcon sensor is updated This event provides information about the host running the sensor. When searching for information about a specific host, you should use the much faster aid_master search capability instead of searching for HostInfo events","Windows, macOS, iOS, Windows Legacy"
+HookedDriverObject,This event describes the presence of a hooked pointer in a DRIVER_OBJECT structure.,Windows
+WfpFilterTamperingFilterDeleted,This event is created whenever WFP indicates to our callout driver that a filter that references one of our callout functions has been deleted from the Base Filtering Engine.,Windows
+WfpFilterTamperingFilterAdded,This event is created whenever WFP indicates to our callout driver that a new filter that references one of our callout functions has been added to the Base Filtering Engine.,Windows
+DeliverLocalFXToCloud,DeliverLocalFXToCloud conveys feature extraction (FX) data to the cloud from the sensor. `DeliverLocalFXToCloud` conveys feature extraction (FX) data to the cloud from the sensor.,"Windows, macOS, Linux"
+UserLogoff,This event is generated when a user logs off from a host.,"Windows, macOS, Linux, ChromeOS"
+NeighborListIP4,"This event shows the IPv4 network addresses and MAC addresses of other devices on the host's network, gathered using ARP on the host. The first time a device sends this event to the CrowdStrike Cloud, its entire ARP table is sent. For later events, only the changes to the ARP table are sent. This event returns data as a MAC address, an IPv4 address, and a delimiter character (0 or 1). Each item is separated by a pipe character (|). If the delimiter character is a 0, the preceding MAC and IP addresses belong to a device. If the delimiter character is 1, the preceding IP and MAC addresses belong to the host's gateway.","Windows, macOS, Linux, Falcon Container, Forensics"
+NeighborListIP6,"This event shows the MAC addresses and IPv6 network addresses of other devices on the host's network, gathered using ARP on the host. The first time a device sends this event to the CrowdStrike Cloud, its entire ARP table is sent. For later events, only the changes to the ARP table are sent. This event returns data as a MAC address, an IPv6 address, and a delimiter character (0 or 1). Each item is separated by a pipe character (|). If the delimiter character is a 0, the preceding MAC and IP addresses belong to a device. If the delimiter character is 1, the preceding IP and MAC addresses belong to the host's gateway.","Windows, macOS, Linux, Falcon Container, Forensics"
+LocalIpAddressRemovedIP4,This event is generated when a host loses its IPv4 network address.,"Windows, macOS, Linux, Falcon Container, iOS, Android"
+LocalIpAddressRemovedIP6,This event is generated when a host loses its IPv6 network address.,"Windows, macOS, Linux, Falcon Container, iOS, Android"
+DcUsbEndpointDescriptor,An event that describes an endpoint descriptor extracted from the firmware of a USB device. An interface descriptor typically defines 2 or more endpoints that are used for data transfer. This event is sent one time when the first device containing this descriptor is seen and every seven days.,"Windows, macOS, Linux"
+DcUsbHIDDescriptor,This event describes a HID (Human Interface Device) descriptor extracted from the firmware of a USB device. A HID descriptor is a container for a complex set of sub-descriptors that identify the capabilities of a HID device. This event is sent one time when the first device containing this descriptor is seen and every seven days.,"Windows, macOS, Linux"
+DcStatus,An event that contains the status information for the Device Control plug-and-play driver. It is sent once per day after it has successfully connected to the Device Control interface.,"Windows, macOS, Linux"
+DcUsbConfigurationDescriptor,An event that describes a configuration descriptor extracted from the firmware of a USB device. This event is sent one time when the first device containing this descriptor is seen and every seven days.,"Windows, macOS, Linux"
+DcUsbInterfaceDescriptor,"An event that describes an interface descriptor extracted from the firmware of a USB device. There are typically multiple interface descriptors for a given configuration descriptor, with each interface exposing a device capability. This event is sent one time when the first device containing this descriptor is seen and every seven days.","Windows, macOS, Linux"
+DcUsbDeviceDisconnected,"An event that describes a disconnected USB device to which Device Control has previously attached. It is sent each time the system powers off, the associated hub/port is power cycled, or the device is physically removed from the system.","Windows, macOS, Linux"
+DcOnline,An event that indicates the Device Control plug-and-play driver interface has come online. It is sent each time the sensor connects to the Device Control interface.,"Windows, macOS, Linux"
+DcOffline,An event that indicates the Device Control plug-and-play driver interface has gone offline. It is sent each time the sensor disconnects from the Device Control interface.,"Windows, macOS, Linux"
+DcUsbDeviceWhitelisted,An event that indicates a USB device was added to an allowlist by a Device Control policy. The Device Control plug-and-play driver did not attach to the device as a result of an allowlist policy rule.,"Windows, macOS, Linux"
+AwsIamAccountAlias,Information from AWS API call ListAccountAliases.,"Windows, Public Cloud"
+FirmwareAnalysisStatus,This event contains status of the FPnP filter driver.,"Windows, macOS"
+FirmwareRegionMeasured,Indicates that a certain region of a firmware image was measured.,"Windows, macOS"
+FirmwareAnalysisErrorEvent,Indicates an occurrence of error associated with the Firmware Analysis feature.,"Windows, macOS"
+FirmwareAnalysisHardwareData,This event contains hardware data collected by Firmware Analysis.,"Windows, macOS"
+AwsEc2NetworkInterface,"This event provides key metadata regarding network interfaces in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeNetworkInterfaces API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeNetworkInterfaces.html] on your behalf. Network interfaces can either be in detached or attached state. When attached, they have an associated EC2 instance ID which can be used to correlate between the two events. Note that multiple network interface objects can also be associated to a single EC2 instance. This event is only generated for Discover for AWS [/support/documentation/10/falcon-discover-feature-guide] customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.","Windows, Public Cloud"
+AwsEc2NetworkInterfacePrivateIP,This event provides key metadata regarding private IP addresses in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeNetworkInterfaces API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeNetworkInterfaces.html] on your behalf. Multiple private IPs can be assigned to a single network interface. The AwsNetworkInterfaceId field can be used to correlate these private IPs to the associated AwsEc2NetworkInterface event. This event is only generated for Discover for AWS [/support/documentation/10/falcon-discover-feature-guide] customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.,"Windows, Public Cloud"
+AwsEc2Volume,This event provides key metadata regarding EBS volumes configured in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeVolumes API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeVolumes.html] on your behalf. This event is only generated for Discover for AWS [/support/documentation/10/falcon-discover-feature-guide] customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.,"Windows, Public Cloud"
+AwsEc2Instance,This event provides key metadata regarding EC2 instances in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeInstances API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html] on your behalf. This event is only generated for Discover for AWS [/support/documentation/10/falcon-discover-feature-guide] customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.,"Windows, Public Cloud"
+AwsEc2SecurityGroup,This event provides key metadata regarding security groups in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeSecurityGroups API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html] on your behalf. Security groups control the level of network based access to resources within a VPC and can typically associated to network interfaces and their attached EC2 instances. This event is only generated for Discover for AWS [/support/documentation/10/falcon-discover-feature-guide] customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.,"Windows, Public Cloud, Windows, Public Cloud"
+AwsEc2Subnet,This event provides key metadata regarding subnets configured in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeSubnets API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSubnets.html] on your behalf. Subnets represent a level of network segmentation and are created within a VPC to control and manage routing configurations. This event is only generated for Discover for AWS [/support/documentation/10/falcon-discover-feature-guide] customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.,"Windows, Public Cloud"
+AwsEc2Image,"This event provides key metadata regarding images (AMIs, AKIs, and ARIs) available in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeImages API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeImages.html] on your behalf. This event is only generated for Discover for AWS [/support/documentation/10/falcon-discover-feature-guide] customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.","Windows, Public Cloud"
+AwsEc2SecurityGroupRule,This event provides key metadata regarding security groups in AWS. CrowdStrike retrieves this information by processing the response from AWS's DescribeSecurityGroups API [https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html] on your behalf. Each event represents a specific rule/ACL defined within a security group and are associated based on the AwsGroupId field. Rules represent the actual logic or ACL applied to the group. This event is only generated for Discover for AWS customers. It's generated either when Discover for AWS observes new or related activity via CloudTrail or during Discover for AWS's weekly full scan.,"Windows, Public Cloud"
+AwsEc2NetworkAcl,,"Windows, Public Cloud"
+AwsEc2NetworkAclEntry,Information from AWS API call DescribeNetworkAcls.,"Windows, Public Cloud"
+GroupIdentity,"Provides the sensor boot unique mapping between GID, AuthenticationId, UserPrincipal, and UserSid.","macOS, Forensics"
+IOServiceRegister,This event describes an IOService being registered with a notification handler.,macOS
+LocalIpAddressIP4,This event is generated when a host uses a new IPv4 network address.,"Linux, Falcon Container, iOS, Android, macOS, Windows, Forensics"
+LocalIpAddressIP6,This event is generated when a host uses a new IPv6 network address.,"Linux, Falcon Container, iOS, Android, macOS, Windows, Forensics"
+HostnameChanged,Sent by the hostname awareness actor to communicate change in hostname.,"Linux, Falcon Container, macOS"
+OsVersionInfo,"This event is generated during any one of the following scenarios: A host is turned on or rebooted A new Falcon sensor is installed on a host An existing Falcon sensor is updated This provides details about the operating system on which the sensor is running. Servers do not get rebooted often. Hence, you might not see some servers in this sample query. Fields: Android","Android, iOS, Windows, macOS, Linux, Falcon Container, Forensics, Windows Legacy, Vmcluster, Kubernetes"
+APKMetadata,"Sent from mobile sensor in PlayStore mode when a new APK file is present on the device, as a result of an installation or an update Fields: Android",Android
+MobileAppsManifest,Delivers information about apps. Fields: Android,Android
+UncontainerizeAppResponse,"Sent in response to UncontainerizeApp, containing response information for the operation. Fields: Android",Android
+WiFiConnect,"Sent when a device connects to a WiFi network. This event is only sent if the Connected Wi-Fi networks setting is enabled in Mobile Policies. Fields: Android, iOS","Android, iOS"
+WiFiDisconnect,"Sent when a device disconnects from a WiFi network. This event is only sent if the Connected Wi-Fi networks setting is enabled in Mobile Policies. Fields: Android, iOS","Android, iOS"
+MobilePowerStats,"Sent when power level in a mobile device changes, also contains duration when the sensor is in foreground/background during IntervalStartTime to IntervalEndTime. Fields: Android","Android, iOS"
+ContainerizationUpdate,"Sent following an LFODownload of a new APK to be installed or updated in the container, containing response information for the operation. Fields: Android",Android
+FileInfo,Error event for FileInfo response. FileInfo response with information about a file. Fields: Forensics,"Forensics, macOS"
+ClipboardCopy,Sent when content is copied to the clipboard.,"iOS, Android"
+InstalledApplication,"An event that describes a single application. E.g. representing a newly installed application, one just removed, or one discovered during enumeration. An event that describes a single application. E.g. representing a newly installed application, one just removed, or one discovered during enumeration. This event contains all the information for a single app.","Windows, macOS, Linux, Forensics"
+SmbClientShareOpenedEtw,An event that indicates when a machine connects to a remote share. This event is supported on all Windows platform except 8.1 and Server 2012 R2. Captured using the ETW consumer.,Windows
+SmbClientShareClosedEtw,An event that indicates when a machine disconnects from a remote share. This event is supported on all Windows platform except 8.1 and Server 2012 R2. Captured using the ETW consumer.,Windows
+SmbServerV1AuditEtw,"An event that indicates that a client attempted to connect to this machine using the Server Message Block protocol, SMBv1. Captured using the ETW consumer.",Windows
+DeactivateMobileSensorResponse,"Sent as confirmation by a Falcon Mobile sensor that it was reset and inactive. On Android, container apps and data have been wiped from the device. Complete deactivation of the sensor, including all current and future cloud connections, will follow shortly after. Sent as confirmation by a Falcon Mobile sensor that it was reset and inactive. Fields: Android, iOS","Android, iOS"
+AccessoryConnected,Sent when the device connects to an external accessory. This event will only be sent if the Connected Bluetooth devices setting is enabled in Mobile Policies. Fields: Android,"Android, iOS"
+AccessoryDisconnected,Sent when a device disconnects from an external accessory. This event will only be sent if the Connected Bluetooth devices setting is enabled in Mobile Policies. Fields: Android,"Android, iOS"
+BillingInfo,Sensor sends this event to inform the cloud about the sensor billing type.,"Windows, Linux, Falcon Container, macOS"
+EtwErrorEvent,An event that indicates that an error occurred which associated is with the ETW consumer.,Windows
+OciContainerTelemetry,An event that contains telemetry information on a container.,"Linux, Falcon Container"
+OciContainerStarted,An event that is sent by the sensor to indicate a container has started when the container is created.,"Linux, Falcon Container"
+OciImageHeartbeat,An event that is sent by the sensor to indicate this image is still being used.,"Linux, Falcon Container"
+OciContainerHeartbeat,An event that is sent by the sensor to indicate this container engine is still being used. This event is sent every 24 hours.,"Linux, Falcon Container"
+OciContainerStopped,An event sent to indicate a container has stopped when the container is deleted.,"Linux, Falcon Container"
+AuditCveKmEtw,An event that indicates that a driver or the kernel reported a known CVE (Common Vulnerabilities and Exposures id). Captured using the ETW consumer.,Windows
+CsUmProcessCrashAuxiliaryEvent,"An event that is emitted when a CrowdStrike process crashes which helps diagnose issues in the field, one per thread.",Windows
+FsVolumeMounted,Provides information about a mounted volume. Fields: Forensics,"Forensics, iOS, Windows, Linux, Falcon Container, macOS"
+OciContainerEngineInfo,An event that contains information about this container engine.,"Linux, Falcon Container"
+AuditCveUmEtw,An event that indicates that an application reported a known CVE (Common Vulnerabilities and Exposures id). Captured using the ETW consumer.,Windows
+SystemCapacity,"An event that describes the CPU and RAM capacity of the system. The event is sent when the sensor connects, every 24 hours thereafter, and in case any change in capacity is detected. An event that describes the CPU and RAM capacity data for a system. The event is sent when the sensor connects, every 24 hours thereafter, and in case any change in capacity is detected.","Windows, macOS, Linux"
+AndroidManifestXmlUploaded,An event that indicates the LFO upload of the AndroidManifest of an android application package was successful and maps the package name to the upload ID. Fields: Android,Android
+AndroidManifestFragmentData,An event that's sent by the sensor along with AndroidManifestXmlUploaded that contains a logical portion of AndroidManifest encoded as JSON after a process is installed or after it is opened. Fields: Android,"Android, Windows"
+FileVaultStatus,Contains information regarding the system FileVault (encrypted) state.,macOS
+AmsiRegistrationStatus,Event to record status in AMSI module.,Windows
+PtActivationStatus,Reports host's compatibility with the Processor Trace feature.,Windows
+ProvisioningStarted,Sent when sensor begins provisioning.,Windows
+ProvisioningStatusUpdate,Sent every 2 minutes during provisioning.,Windows
+ProvisioningEnded,Sent when provisioning is completed.,Windows
+K8SCluster,Snapshot of Kubernetes cluster for mapping Kubernetes cluster id and name. Fields: Public Cloud,Public Cloud
+SpotlightEntityBatchHeader,Spotlight Batch header to indicate all required metadata of incoming batch along with information to deal with possibilities of dropped subsequent events.,"Windows, macOS, Linux"
+RemovableMediaVolumeMounted,This event provides information about a removable media volume that was just mounted. Fields: Android,"Android, Windows"
+FsVolumeUnmounted,Provides information about an unmounted volume.,"iOS, Windows, macOS, Linux, Falcon Container"
+RemovableMediaVolumeUnmounted,An event that contains information about a removable media volume that was just unmounted. Fields: Android,Android
+RemovableMediaFileWritten,An event that is emitted for files written to removable media on Android devices. Fields: Android,Android
+ActiveDirectoryAccountNameUpdate,Indicates a change to the subject account's SAM account name.,Windows
+ActiveDirectoryAccountOuUpdate,Indicates a change to the subject account's organizational unit.,Windows
+ActiveDirectoryAccountDisabled,Indicates the subject account has been disabled.,Windows
+ActiveDirectoryAccountLocked,Indicates the subject account has been locked.,Windows
+ActiveDirectoryAccountUnlocked,Indicates the subject account has been unlocked.,"Windows, Windows"
+ActiveDirectoryAccountCreated,Indicates the creation of the subject account.,Windows
+ActiveDirectoryAccountPasswordUpdate,Indicates a change to the subject account's password.,Windows
+ActiveDirectoryAccountEnabled,Indicates the subject account has been enabled.,Windows
+StaticAnalysisContainerTelemetry,Cloudable event in response to a telemetry query for the static analysis containers.,Windows
+UserInformationEtw,An event that indicates the password of a user was changed or set and other user information taken from UserLogonEtw.,Windows
+TcgPcrInfo,An event that contains the Platform Configuration Register (PCR) values.,Windows
+DcBluetoothDeviceDisconnected,This event represents a disconnected Bluetooth device.,"Windows, macOS"
+DiskUtilization,An event that contains the used and available storage space for each mounted logical drive or volume that has an underlying physical disk locally attached to the system. The event is sent when the sensor connects and every 12 hours thereafter.,"Linux, Forensics"
+DcBluetoothDeviceConnected,This event represents a connected Bluetooth device.,"Windows, macOS"
+CidMigrationConfirmation,,"macOS, Linux, Windows"
+CidMigrationComplete,,"macOS, Windows, Linux, Android"
+DriverPreventionStatus,,Windows
+SensorGroupingTagsUpdate,,Windows
+SysConfigInfo,,"Linux, Falcon Container"
+IdpPolicyAccountEventRuleMatch,Fields: Public Cloud,Public Cloud
+UserLogon,This event is generated when a user logs on to a host.,"Linux, Windows, macOS, ChromeOS"
+SensorAntiTamperState,,Windows
+UserLogonFailed2,"An event that indicates that a local user attempted to logon, but failed due to bad password. LogonTime is the last successful logon time. The remote information will be present only if the logon originated over the network. RawProcessId will attribute a pid if relevant.","Linux, ChromeOS, macOS, Windows, Windows"
+ServicesStatusInfo,Detailed information and status of a windows service.,"Windows, Forensics"
+OdsCancelRequestReceived,,"Windows, macOS"
+OdsScheduleCancelRequestReceived,,"Windows, macOS"
+OdsScheduleRequestReceived,,"Windows, macOS"
+OdsStarted,,"Windows, macOS"
+OdsProfileReceived,,"Windows, macOS"
+OdsStartRequestReceived,,"Windows, macOS"
+OdsMaliciousFileFound,,"Windows, macOS"
+OdsActionStatus,,"Windows, macOS"
+ChannelActive,,Windows
+OdsScheduleCanceled,,"Windows, macOS"
+OdsStatus,,"Windows, macOS"
+DcIdentification,This event enables monitoring of domain controllers (DCs) and the passing of identifying information to the CrowdStrike Cloud.,Windows
+K8SClusterInfo,Fields: Kubernetes,Kubernetes
+AgentOnline,"This event is generated when any of these occur: 1. A host is turned on or rebooted 2. A new sensor is installed on a host 3. An existing sensor is updated This event can help to determine when a host was last rebooted. However, it's not intended for gathering report data, such as uptime of long-running servers or counting all active hosts. For reports, use Falcon Investigate's Sensor Report [/investigate/events/en-US/app/eam2/sensor_app] . This event is generated when any of these occur: 1. A host is turned on or rebooted 2. A new sensor is installed on a host 3. An existing sensor is updated 4. The managed configuration changes This event can help to determine when a host was last rebooted. However, it's not intended for gathering report data, such as uptime of long-running servers or counting all active hosts. Fields: ChromeOS","ChromeOS, macOS, Windows, Linux, Falcon Container, Android, Kubernetes, iOS, Windows Legacy, Vmcluster"
+SensorHeartbeat,Sent periodically to inform the cloud that the sensor is active. Sent periodically to inform the cloud that the sensor is active. Fields: ChromeOS,"ChromeOS, Windows Legacy, Vmcluster, Android, iOS, macOS, Windows, Linux, Falcon Container, Kubernetes"
+LocalWindowsUserUpdate,,Windows
+SmbClientShareLogonBruteForceSuspected,,"Windows, Windows"
+CsKmCrashSummaryEvent,,Windows
+LockdownModeStatus,,iOS
+IdpContainerRestarted,,Windows
+AsepValueUpdate,This event is generated when a Microsoft Auto Start Execution Point registry key has been updated.,"Windows, Windows, macOS, Linux, Falcon Container"
+RansomwareRenameFile,A reified LocalFsPostRename event so the cloud can route these events for ransomware support.,Windows
+AsepKeyUpdate,Generated when an Auto Start Execution Point registry key is updated.,Windows
+ProcessRollup,An event that contains information from several sources and combines it into one event. The event describes a process which is running or has previously run on the host. The functionality of this event has been replaced by ProcessRollup2.,Windows
+PeVersionInfo,"An event that describes file version information from a Portable Executable file resource location, as seen in the file properties dialog on Windows. The data is in the form of a binary blob that requires further parsing.",Windows
+KernelModeLoadImage,Indicates a kernel-mode module has been loaded into memory.,"Windows, macOS, Linux, Falcon Container, Forensics"
+IoSessionConnected,An event that is emitted when an IO session has been connected.,Windows
+IoSessionLoggedOn,An event that is emitted when an IO session has been logged off.,Windows
+CreateService,Generated when a Windows service is created.,Windows
+ModifyServiceBinary,Indicates a Windows service's binary was changed.,Windows
+UACCredentialCaptureElevation,This UAC event indicates the UAC consent.exe application was used by Windows to refresh the smart card credentials after a configurable timeout has expired.,Windows
+UACCOMElevation,This UAC event indicates an attempt has been made to elevate the security privileges of a target COM object.,Windows
+UACMSIElevation,This UAC event indicates an attempt has been made to elevate the security privileges of a target MSI.,Windows
+WroteExeAndGeneratedServiceEvent,Indicates a process both wrote an executable and generated a service event.,"Windows, Windows"
+UACAxisElevation,This UAC event indicates an attempt has been made to elevate the security privileges of a target ActiveX Installation Service (AXIS).,Windows
+DllInjection,This event indicates that DLL injection occurred in the target process.,Windows
+UnsignedModuleLoad,This event contains information about an unsigned module that was loaded into a target process. It combines relevant information from the ImageHash and SignInfoWithCertAndContext events for the unsigned module.,Windows
+SuspiciousRawDiskRead,This event indicates a process successfully read a target file using raw disk access.,Windows
+HostedServiceStopped,"This event is emitted when a hosted service (that is, a service inside a SvcHost.exe binary) is stopped by the service control manager (SCM). Unfortunately, the sensor is not currently capable of identifying who requested this operation. However, it can be used to confirm that this is a service stopping vs. a service crashing or being terminated. Also, starting and stopping hosted services multiple times during boot might not always show up in this event due to caching done by the SCM.",Windows
+WmiCreateProcess,"Windows Management Instrumentation (WMI) is a default service installed on machines with Windows XP and newer. WMI is the infrastructure for management data and operations which allows a user to remotely manage machines and automate administrative tasks. WMI also supports scripting languages such as PowerShell and VBScript. Adversaries have utilized the WMI service to install implants, tools and perform credential theft via scripting in an effort to maneuver throughout customer environments. The Enhanced Attacker Execution Profiling (EAEP) event “WmiCreateProcess” will be useful in tracking the adversary’s lateral activity and/or origin of an attack during an intrusion. The Enhanced Attacker Execution Profiling (EAEP) event category focuses on gathering additional endpoint data on things like service creation, scheduled tasks, firewall rule modification, etc. This event is emitted when it is determined WMI was used to start a new process. ProcessRollup2 may also be updated to include RPC client information if available. There may be some known inconsistencies with attribution of the real RPC client data here, due to worker thread indirection that occurs within the WMI service process. If so, a later update will resolve those inconsistencies.",Windows
+ExecutableDeleted,This event indicates that an executable was deleted from the host.,"Windows, macOS, Linux"
+NewExecutableRenamed,This event is generated when an executable is renamed.,"Windows, macOS"
+SuspiciousDnsRequest,This event is generated when the sensor detects a suspicious DNS request. A request is suspicious if it is attempting to send a request to a domain found on the sensor’s list of suspicious domains.,"Windows, Linux, macOS"
+ProcessSelfDeleted,"This event indicates when a process self-delete situation is detected. It will be thrown when a process deletes a file that was previously loaded as the primary module in an ancestor process. If the self-delete was accomplished via injecting into an already running process, ContextProcessId will be the injector as well.","Windows, macOS, Linux"
+FlashThreadCreateProcess,Thread associated with Flash activity created a process.,"Windows, macOS"
+EndOfProcess,"When a process that’s running on a host finishes, the sensor will count all of the events that were generated by that process, bundle the information in an EndOfProcess event, and send it to the cloud. This allows you to determine, for example, how many DNS requests a process made, how many directory creation events occurred, or how many network connections a process made.","Windows, macOS, Linux, Falcon Container"
+CommandHistory,This event includes the full command history associated with one of the consoles in a process that has recently terminated (identified by the TargetProcessId). Note that a given UPID may be associated with multiple consoles (identified by ApplicationName).,Windows
+BehaviorWhitelisted,Indicates that a behavior has been whitelisted.,"Windows, macOS, Linux"
+UserLogonFailed,This event is generated when a user logon fails.,Windows
+FalconHostRegTamperingInfo,An event that describes the registry event that triggered a Falcon sensor tampering indicator.,Windows
+FalconHostFileTamperingInfo,An event that describes the file event that triggered a Falcon sensor tampering indicator.,Windows
+ScriptControlErrorEvent,An event that contains telemetry data containing up to 56 KB ScriptContent field data from AMSI (AntiMalware Scan Interface) that has been deobfuscated.,Windows
+SuspiciousRegAsepUpdate,An event that describes the registry activity that triggered a suspicious registry ASEP (Autostart Extension Point) detect.,Windows
+NetworkModuleLoadAttempt,An event that indicates that a process whose primary image was not on a network attempted to load a module from that network.,Windows
+RemovableDiskModuleLoadAttempt,An event that indicates that a process with a primary image that is not on a removable disk attempted to load a module from a removable disk.,Windows
+SuspiciousEseFileWritten,This event indicates that a possible domain credential file (NTDS.dit) was copied from a volume snapshot.,Windows
+FileDeleteInfo,This event is generated when a file deletion for a full file occurs. ADS deletions are not currently tracked with this event.,"Windows, macOS, Linux"
+SystemTokenStolen,An event that indicates that system token stealing was detected.,Windows
+LowILModuleLoadAttempt,An event that indicates that a non-LowIL process attempted to load an untrusted LowIL module.,Windows
+ImageHash,This event is generated for each DLL or executable loaded into a process’ memory.,"macOS, Linux, Falcon Container, Windows"
+TerminateProcess,This event is thrown when a process exits normally or is forcibly terminated.,"macOS, Linux, Falcon Container, Windows, ChromeOS"
+ProcessActivitySummary,A rollup event created when a process terminates. Includes statistical information about what a process did during its lifetime.,"macOS, Windows"
+KextLoad,"Signals a Kernel Extension (KEXT) Load, triggered via a MAC hook.",macOS
+KextUnload,"Signals a Kernel Extension (KEXT) Unload, triggered via a MAC hook.",macOS
+DirectoryCreate,This event is generated when a process creates a new folder.,"macOS, Windows, Linux"
+SyntheticProcessRollup2,"This event provides data similar to what is available in a ProcessRollup2. SyntheticProcessRollup2 events are generated for processes that started before the sensor does, such as during installation.","macOS, Windows, Linux, Falcon Container, ChromeOS"
+CriticalFileAccessed,A critical file was accessed.,"macOS, Linux, Falcon Container, ChromeOS"
+CriticalFileModified,A critical file was modified.,"macOS, Linux, Falcon Container, ChromeOS"
+PtyCreated,An event that notifies that a pty has been created.,macOS
+FileOpenInfo,This event is generated when a file is opened by a process.,"macOS, Linux, Falcon Container, Windows"
+FirewallDisabled,An event that is sent from the sensor when packet filter is disabled.,macOS
+FirewallEnabled,An event that is sent from the sensor when packet filter is enabled.,macOS
+FileCreateInfo,This event is generated when a file is created by a process.,"macOS, Linux, Falcon Container, Windows, Linux, Falcon Container, Windows, macOS, Windows Legacy"
+CriticalEnvironmentVariableChanged,A process set a critical environment variable.,"Linux, Falcon Container"
+FileDeleted,"This event is generated when a file deletion for a full file occurs. ADS deletions are not currently tracked with this event. This event has been deprecated as of Falcon Sensor for Windows 4.16.7903, and Falcon Sensor for Mac 4.16.7801. Older sensors and existing data for these events will still appear, but new sensors utilize the FileOpenInfo event. This event is generated when a file deletion for a full file occurs. ADS deletions are not currently tracked with this event. File entry from a file observed in the recycle bin. Fields: Android","Android, Windows, Forensics"
+ProcessRollup2,"This event (often called ""PR2"" for short) is generated for a process that is running or has finished running on a host and contains information about that process. For every ProcessRollup2 event, there is a corresponding event that is generated when a process completes. The name of this event is EndOfProcess for Windows and Mac and TerminateProcess for Linux. Important: This event is generated on Windows, Mac, and Linux sensors. However, because of the way Mac and Linux manage processes at the kernel level, the Falcon sensors for these platforms are configured to send ProcessRollup2information in a second event called ProcessRollup2Stats. For more information, see ProcessRollup2Stats. This event (often called ""PR2"" for short) is generated for a process that is running or has finished running on a host and contains information about that process. For every ProcessRollup2 event, there is a corresponding event that is generated when a process completes. The name of this event is EndOfProcess for Windows and Mac and TerminateProcess for Linux. Important: This event is generated on Windows, Mac, and Linux sensors. However, because of the way Mac and Linux manage processes at the kernel level, the Falcon sensors for these platforms are configured to send ProcessRollup2information in a second event called ProcessRollup2Stats. For more information, see ProcessRollup2Stats. Understanding TargetProcessId Every ProcessRollup2 event contains a field called TargetProcessId. This ID is generated internally by the sensor, and will be unique for every instance of a process. For example, if you run cmd.exe twice, you will see two different ProcessRollup2 events with two unique values for TargetProcessId. This ID should not be confused with the host operating system PID for the process, which will be a different value. Processes often generate multiple, if not dozens of related events. For example, opening a browser or running an executable can generate network connectivity events, temporary file write events, DNS request events, etc. We therefore need a way to understand the parent-child relationship between processes and the events they generate. Understanding ContextProcessId Every event that is generated by a ProcessRollup2 contains a data field called ContextProcessId. The ContextProcessId will match the TargetProcessId of its parent ProcessRollup2 event. In the example below, the ContextProcessId values indicate that each of the events are children of the parent ProcessRollup2events. By searching for events that have matching values for ContextProcessId and TargetProcessId, you can see a list of all events that were generated as a result of a ProcessRollup2 event. Understanding ParentProcessId As previously mentioned, every process that executes on a host has a corresponding ProcessRollup2 event. This means that when a process spawns another process, a brand new ProcessRollup2 event will be generated for that new ProcessRollup2event. This new event will contain a field called ParentProcessId. The ParentProcessId of the child PR2 will match the TargetProcessId of the parent PR2, as shown below : By searching for events that have matching values for ParentProcessId and TargetProcessId, you can determine the parent-child relationship of multiple ProcessRollup2 events. This event (often called ""PR2"" for short) is generated for a process that is running or has finished running on a host and contains information about that process. For every ProcessRollup2 event, there is a corresponding event that is generated when a process completes. The name of this event is EndOfProcess for Windows and Mac and TerminateProcess for Linux. Important: This event is generated on Windows, Mac, and Linux sensors. However, because of the way Mac and Linux manage processes at the kernel level, the Falcon sensors for these platforms are configured to send ProcessRollup2information in a second event called ProcessRollup2Stats. For more information, see ProcessRollup2Stats. Understanding TargetProcessId Every ProcessRollup2 event contains a field called TargetProcessId. This ID is generated internally by the sensor, and will be unique for every instance of a process. For example, if you run cmd.exe twice, you will see two different ProcessRollup2 events with two unique values for TargetProcessId. This ID should not be confused with the host operating system PID for the process, which will be a different value. Processes often generate multiple, if not dozens of related events. For example, opening a browser or running an executable can generate network connectivity events, temporary file write events, DNS request events. We therefore need a way to understand the parent-child relationship between processes and the events they generate. Understanding ContextProcessId Every event that is generated by a ProcessRollup2 contains a data field called ContextProcessId. The ContextProcessId will match the TargetProcessId of its parent ProcessRollup2 event. In the example below, the ContextProcessId values indicate that each of the events are children of the parent ProcessRollup2events. By searching for events that have matching values for ContextProcessId and TargetProcessId, you can see a list of all events that were generated as a result of a ProcessRollup2 event. Understanding ParentProcessId As previously mentioned, every process that executes on a host has a corresponding ProcessRollup2 event. This means that when a process spawns another process, a brand new ProcessRollup2 event will be generated for that new ProcessRollup2event. This new event will contain a field called ParentProcessId. The ParentProcessId of the child PR2 will match the TargetProcessId of the parent PR2, as shown below : By searching for events that have matching values for ParentProcessId and TargetProcessId, you can determine the parent-child relationship of multiple ProcessRollup2 events. Fields: Android","Android, Linux, Falcon Container, ChromeOS, Forensics, Windows Legacy, macOS, Windows"
+ReflectiveDllLoaded,An event that indicates that a user space thread reflectively loaded DLL.,"Windows, Windows"
+ProtectVmEtw,A virtual memory protect event generated from ETW data.,Windows
+ProcessWitness,"Emitted when the sensor witnesses a process is running. This event is not an indication that a process just started, only that the process was first seen running when the event was sent. It is used for iOS where there is no way to be notified of processes start or running, or to query about running processes, and the sensor only knows a process exists when it makes a network connection. This event is therefore different from PR2s or SynPR2s.",iOS
+ClipboardPaste,Sent when content is pasted from the clipboard. Fields: Android,Android
+AndroidIntentSentIPC,This event is sent when an Android Intent is fired from the container Fields: Android,Android
+MobileOsIntegrityStatus,Describes the integrity of the mobile OS (eg. jailbroken/rooted),"iOS, Android"
+JarFileWritten,This event is generated when a Java executable archive (.jar) file type is written to disk. Fields: Android,"Android, Windows, macOS, Linux"
+RegGenericValueUpdate,An event that indicates that a registry value has been updated.,Windows
+ScreenshotTakenEtw,An event that indicates that partial or full screenshot has been taken. Captured using the ETW consumer.,Windows
+SetWinEventHookEtw,An event that indicates that an application called the SetWinEventHook API. Captured using the ETW consumer.,Windows
+RegSystemConfigValueUpdate,An event that indicates that a registry value related to system configuration or security has been updated.,Windows
+SetThreadCtxEtw,,Windows
+RegisterRawInputDevicesEtw,An event that indicates that an application called the RegisterRawInputDevices API. Captured using the ETW consumer.,Windows
+QueueApcEtw,,Windows
+SmbClientNamedPipeConnectEtw,An event that indicates when a machine connects to a remote SMB (Server Message Block) named pipe. The event contains the pattern id of the associated indicator and is supported on all Windows platform except 8.1 and Server 2012 R2. Captured using the ETW consumer.,"Windows, Windows"
+ProcessExecOnSMBFile,An event that contains telemetry data emitted on execution of a PE file which was written by SMB.,Windows
+TokenImpersonated,An event that contains detailed before and after impersonation information for detection telemetry.,Windows
+SetWindowsHookExEtw,An event that indicates that an application called SetWinEventHookEx API. Captured using the ETW consumer.,Windows
+WmiProviderRegistrationEtw,An event that is emitted when a WMI (Windows Management Instrumentation) provider gets registered. Captured using the ETW consumer.,Windows
+MobileDetection,"An event that's sent by the sensor when a sensor-level detection occurs. Fields: Android, iOS","Android, iOS"
+DexFileWritten,Emitted when a file has been written that contains a real Dex image header. Fields: Android,Android
+DeveloperOptionsStatus,"An event that contains info about developer-related settings on the device. Fields: Android, iOS","Android, iOS"
+SELinuxStatus,An event that contains info about the SELinus status. Fields: Android,Android
+StorageEncryptionStatus,An event that contains information about the Device Storage encryption. Fields: Android,Android
+LockScreenStatus,"An event that contains info about the device lock screen mechanism. Fields: Android, iOS","Android, iOS"
+SystemPartitionStatus,An event that contains information about the device system partition. This event is deprecated as of Android sensor version 2021.09.3060002. Fields: Android,Android
+SafetyNetCompatibilityStatus,An event that contains the SafetyNet compatibility status obtained via the Google SafetyNet API. Fields: Android,Android
+DnsRequestResult,"An event that contains DNS request results after a DNS request. Fields: Android, iOS","Android, iOS"
+FileSystemAttributesStatus,An event that contains info about the Filesystem attributes of the device.,iOS
+DebuggableFlagTurnedOn,An event that indicates a debuggable flag has been turned on for a non-dev build of an app. Fields: Android,Android
+BootLoaderStatus,An event that contains info about the device's bootloader. Fields: Android,Android
+HarmfulAppData,"An event that contains the name, hash, and category of the harmful app. Fields: Android",Android
+DuplicateInstallFromPlayStore,An event that indicates a containerized app is also installed outside the container. Fields: Android,"Android, Windows"
+ScriptControlScanInfo,,"Windows, macOS, Linux"
+ObjCRuntimeAltered,"An event that indicates an Obj-C method has been tampered with. MethodSignature indicates which Obj-C method has been tampered with. ImageFileName contains the path to the image containing the new, swizzled, implementation of the method. ExpectedImageFileName contains the path where it was expected. SuspectAddress contains the load address of ImageFileName. ExpectedAddress contains the load address of ExpectedImageFileName.",iOS
+UnexpectedDynamicLibraryLoaded,An event that indicates that an unexpected dynamic library was loaded at runtime.,iOS
+UnexpectedFileFound,An event that indicates a file that should not exist on the device has been found. An event that indicates a file that should not exist on the device has been found.,"iOS, Android"
+TrampolineDetected,"An event that indicates a C function has been tampered with. In iOS jailbreak, functions are modified by adding an unconditional trampoline in the first 4 words. FunctionName contains the function that has been determined to have been tampered with, ImageFileName contains the path to the image where the trampoline jumps to, and ExecutableBytes contains the first 4 words of the tampered-with function where the trampoline was detected.",iOS
+CertificatePinningCompromised,"An event that indicates that the certificate pinning methods/functions on the device have been tampered with and cannot be trusted. For further details, see the following associated events: ObjCRuntimeAltered or TrampolineDetected.",iOS
+ProcessTokenStolen,An event that describes a process token stealing detection. ContextProcessId has been detected stealing the token of TargetProcessId.,Windows
+DebuggedState,"An event that indicates a process is in the state of being debugged (i.e., has a debugger attached to it.)",iOS
+PathUnexpectedlyReadable,"An event that indicates a system file or directory can be opened for reading. On a non-jailbroken system, this should not be possible.",iOS
+UnexpectedEnvironmentVariable,An event that indicates some dangerous environment variables have made it to the app at runtime.,iOS
+CodeSigningAltered,An event that indicates the code signing flags of the current application have unexpected flags or are missing expected ones.,iOS
+SafetyNetCheckFailed,An event that indicates the SafetyNet check could not be completed. Fields: Android,Android
+SystemPartitionAltered,An event that indicates a system partition has been altered and is in an unexpected state.,iOS
+InstallFromUnknownSourcesStatus,An event that contains info about third-party app installers on Android. Fields: Android,Android
+RemoteBruteForceDetectInfo,An event that describes a remote brute force detection.,Windows
+SensitiveWmiQuery,An event that indicates that a client process executed a sensitive WMI query.,Windows
+DCSyncAttempted,"Directory Services changes were replicated. If the source host is not a Domain Controller, this could represent malicious activity.",Windows
+RemediationMonitorRegistryRemoval,Notification of a registry persistence removal remediation action that would have been attempted by the sensor but wasn't because the remediation was in monitor mode.,Windows
+ThreadBlocked,Reports the status of a block thread attempt.,Windows
+VerifyAppsDisabled,This event has been deprecated. Fields: Android,Android
+DNSRequestDetectInfo,"This event is sent whenever a malicious DnsRequest is detected. Fields: Android, iOS","Android, iOS, Linux"
+DnsRequestBlocked,"This event is sent whenever a DnsRequest is blocked. Connection to either the IP or the domain in this request has been blocked. Fields: Android, iOS","Android, iOS"
+UserSetProcessBreakOnTermination,,Windows
+SuspiciousPrivilegedProcessHandle,Indicates a process has opened a handle to a privileged process with special access rights.,Windows
+FileWrittenAndExecutedInContainer,A file was written and later executed in a container.,"Linux, Falcon Container"
+DwmCompositionResourceExploitAttempt,,Windows
+GenericFileWritten,An event that is emitted when a process is done writing to a file that doesn't match a more specific *FileWritten event. These events are currently generated for removable disks only. An event that is emitted when a process is done writing to a file that doesn't match a more specific *FileWritten event. These events are currently generated for removable disks only.,"macOS, Windows"
+RemediationMonitorScheduledTaskRemoval,Notification of a scheduled task persistence removal remediation action that would have been attempted by the sensor but wasn't because the remediation was in monitor mode.,Windows
+ReflectiveDotnetModuleLoad,Event generated when .NET module is reflectively (e.g. from a byte array) loaded in a process.,Windows
+HookedAndroidMethodFound,An event that indicates that a hooking framework such as Xposed has been found to have been loaded by the FalconMobile application. The FalconMobile application might have been compromised and the device might have been rooted. Fields: Android,Android
+SuspiciousAndroidStackTraceElementFound,An event that indicates that a hooking framework has been found via stacktrace analysis and that the FalconMobile application might have been compromised. Fields: Android,Android
+SuspiciousAndroidActivityFound,An event that indicates that a currently installed application on the device has been found providing a suspicious Android Activity. Fields: Android,Android
+SuspiciousAndroidSystemPropertyFound,An event that indicates that a suspicious system property has been found. This might indicate the OS Integrity has been tampered with which might mean the device has been rooted. Fields: Android,Android
+SuspiciousAppFound,An event that indicates that a suspicious application has been found to be installed on the device. Fields: Android,Android
+SuspiciousAndroidLogcatMessageFound,An event that indicates that an application log message originating from a suspicious source has been found indicating the FalconMobile application might have been compromised and the device might have been rooted. Fields: Android,Android
+NtfsQueryEaExploitAttempt,,Windows
+NewExecutableWritten,"This event is generated when an executable file extension is written, whether or not it is truly an executable file type. Any file that ends with a known executable file extension (e.g. .exe, .bat, .scr) will generate this event. The difference between a NewExecutableWritten event and PeFileWritten is that NewExecutableWritten looks for the extension of a file written, while PEFileWritten looks for the PE header in a file that was written.","Linux, macOS, Windows"
+RemediationMonitorServiceRemoval,Notification of a service persistence removal remediation action that would have been attempted by the sensor but wasn't because the remediation was in monitor mode.,Windows
+AndroidInitServiceRemoved,An event that indicates that an init (boot) service has been removed from the system configuration. This might indicate the OS Integrity has been tampered with which might mean the device has been rooted. Fields: Android,Android
+AndroidInitServiceAdded,An event that indicates that a new init (boot) service has been added to the system configuration. This might indicate the OS Integrity has been tampered with which might mean the device has been rooted. Fields: Android,Android
+SystemUpdatesBlockedByDNS,Indicates that OS updates have been blocked via DNS.,iOS
+SystemUpdatesBlockedByHTTP,Indicates that OS updates have been blocked via HTTP.,iOS
+SystemUpdatesBlockedByFilesystem,Indicates that OS updates have been blocked via the filesystem.,iOS
+ProcessExecOnRDPFile,A PE file was written and executed from an RDP session.,Windows
+SafetyNetVerifyAppsStatus,An event that contains information about the status of SafetyNet Verify Apps (Google Play Protect) on the device. Fields: Android,Android
+MemoryProtectionUpdated,Triggers if a new executable memory region is mapped which is writable or mapped from a file.,"Linux, Falcon Container"
+NamespaceChanged,,"Linux, Falcon Container"
+ProcessSessionCreated,,"Linux, Falcon Container"
+FileSetMode,Indicates the file permissions have been modified via chmod/fchmod/fchmodat.,"Linux, Falcon Container"
+BMLFeatureData,,"Windows, macOS, Linux, Falcon Container"
+HostTimeModified,,"Linux, Falcon Container"
+KernelServiceStarted,Indicated that a kernel service was started locally or remotely.,Windows
+RootkitDetectionResponse,,Windows
+MbrOverwriteRawDetectInfo,,Windows
+RegCredAccessDetectInfo,,Windows
+SourceCodeFileWritten,,"Windows, macOS"
+ArchiveFileContent,,"Windows, macOS"
+UnixFileWritten,Fields: Android,Android
+ScheduledTaskTamperingRegistryOperation,,Windows
+ScriptFileWrittenInfo,,Windows
+SmtpEmailMessage,,Windows
+SessionPatternTelemetry,,"Linux, macOS"
+PacketFilterAttached,,"Linux, Windows, Linux"
+FileStatFsInfo,,Linux
+UnixName,,Linux
+Pop3Command,,"Windows, Linux"
+ThreadPreviousModeMismatch,,Windows
+SigningIdentity,,iOS
+ProcessTokenPrivilegesEdited,,Windows
+SensorTampering,Thrown when a tampering event occurs on the sensor.,"Linux, Android"
+MobileOsForensicsReport,,"iOS, Android"
+IntrusivePackageDiscovered,Fields: Android,Android
+IntrusiveProcessDiscovered,,iOS
+MotwWritten,,Windows
+SignInfoWithContext,Sent by SignInfoActor as a response to the SignInfoRequestWithContext sent by the cloud. It contains information about the signing-state of an image.,"Windows, macOS"
+SuspiciousCredentialModuleLoad,"An indicator event fired when suspicious credential module activity is detected, which means the process opened a handle to the LSASS process and loaded one of its DLLs for symbolic resolution of protected LSASS resources. The name of the DLL that was loaded is in the ImageFileName field This event also contains data from the offending application, whose name is stored in TargetFileName",Windows
+SignInfoWithCertAndContext,Sent by SignInfoActor as a response to the SignInfoRequestWithContext sent by the cloud. It contains information about the signing-state of an image.,"macOS, Windows"
+InjectedThreadFromUnsignedModule,This event contains information about a thread that was injected into a process from an unsigned module. It combines relevant information from the InjectedThread and SignInfoWithCertAndContext events.,Windows
+SuspiciousRawDiskReadFromUnsignedModule,This event contains information about an unsigned module reading a target file using raw disk access. It combines relevant information from the SuspiciousRawDiskRead and SignInfoWithCertAndContext events.,Windows
+FileIntegrityMonitorRuleMatched,"An event that contains data about a change to a directory, file, or registry key. Used with the FileVantage service.","macOS, Windows, Linux"
+MacroContentInfo,Description: Provides information about a macro extracted when an Office file is written or opened,Windows
+SensorSettingsUpdate,,"Windows, macOS"
+IdpConnectionsOverloadNotification,"IDP Traffic Inspection detected more than 15,000 concurrent connections in active enforcement mode.",Windows
+ProcessTreeCompositionPatternTelemetry,,Windows
+K8SAdmissionReviewResult,Fields: Kubernetes,Kubernetes
+K8SAdmissionReviewResultPrime,Fields: Public Cloud,Public Cloud
+RemoteCommandResponse,,"Linux, Windows, macOS"
+ProcessRollup2Stats,"Important: This event is generated on Mac and Linux Sensors only. The Falcon sensor for Windows only generates ProcessRollup2 events. When a process finishes running, the sensor generates and sends a ProcessRollup2 event. Linux sensors send far more ProcessRollup2 events than Windows (roughly 20x as many), so rather than send events for every process on those hosts, the sensor sends an initial ProcessRollup2 event, followed 60 minutes later by a ProcessRollup2Stats event with a SHA256 hash and the count of how many times the hash executed in the last 60 minutes. Important: This event is generated on Mac and Linux Sensors only. The Falcon sensor for Windows only generates ProcessRollup2 events. When a process finishes running, the sensor generates and sends a ProcessRollup2 event. Mac sensors send far more ProcessRollup2 events than Windows (roughly 20x as many), so rather than send events for every process on those hosts, the sensor sends an initial ProcessRollup2 event, followed 10 minutes later by a ProcessRollup2Stats event with a SHA256 hash and the count of how many times the hash executed in the last 10 minutes.","Linux, Falcon Container, macOS"
+SuspiciousLackOfProcessRollupEvents,This event is emitted if we don't see any ProcessRollup2 events for a long time.,Windows
+AgentConnect,This event is generated when the sensor successfully connects to the cloud.,"Windows Legacy, Windows, Linux, Falcon Container, Kubernetes, macOS, Android, iOS, Windows Legacy, Vmcluster, iOS, Linux, Falcon Container, Android, Kubernetes, macOS, Windows"
+IsoExtensionFileWritten,,Windows
+ImgExtensionFileWritten,,Windows
+DcBluetoothDeviceConnectedDetails,,"Windows, macOS"
+FirmwareImageAnalyzed,Indicates that analysis of a firmware image was completed.,"Windows, macOS"
+DirectoryTraversalOverSMB,This event indicates Directory traversal over an SMB session detected.,Windows
+CrashNotification,The sensor sends this to the cloud when the Diagnostics Actor notices that the machine has booted with indication of previous session ending in a crash.,"macOS, Windows"
+OciContainerComplianceInfo,,"Linux, Falcon Container"
+IdpDcPerfReport,This event reports Domain Controller performance counter.,Windows
+FileRenameInfo,This event is generated when a file is renamed. Only sent as part of a detection.,"Linux, Falcon Container, macOS, Windows"
+SensorSelfDiagnosticTelemetry,,"Windows, Linux, macOS"
+SpotlightEntityBatch,Single Event consisting of a list of Spotlight Entity State data packaged for optimal size and part of a larger set of batch events that will be processed in Cloud.,"Linux, Windows, macOS"
+CustomIOADomainNameDetectionInfoEvent,An event triggered by a Domain Name custom IOA rule.,"Windows, macOS, Linux"
+CustomIOAFileWrittenDetectionInfoEvent,An event triggered by a File Creation custom IOA rule.,"Windows, macOS, Linux"
+CustomIOABasicProcessDetectionInfoEvent,An event triggered by a Process Creation custom IOA rule.,"Windows, Linux, Falcon Container, macOS"
+CustomIOANetworkConnectionDetectionInfoEvent,An event triggered by a Network Connection custom IOA rule.,"Windows, macOS, Linux"
+RegistryOperationBlocked,An event that indicates that a registry operation has been blocked using a callback filter.,Windows
+RegistryOperationDetectInfo,An event that describes a registry operation blocked using a callback filter.,Windows
+MacroDetectInfo,Event description: Provides more context around the macro content that was detected.,Windows
+UmppcDetectInfo,An event that describes a UMPPC-based detection.,Windows
+SnapshotVolumeMounted,Information about a snapshot volume that was just mounted.,Windows
+ImpersonationTokenInfo,"ImpersonationTokenInfo represents a security context for a general impersonation activity. Each ImpersonationTokenInfo can be linked to a corresponding UserIdentity by using the (UserSid, AuthenticationId) tuple.",Windows
+UserIdentity,"The UserIdentity event is generated when a user logs in to a host. It conveys important security-related characteristics associated with a user to the CrowdStrike cloud, such as the user name. It’s normally generated once per security principal, and is thus not on its own a sign of a suspicious activity.","macOS, Windows, Forensics, Linux"
+DriverLoad,An event to notify of a driver load that will be used for detection. Fields: Forensics,"Forensics, Windows"
+UserAccountDeleted,"User account deleted. This event is generated when a user account is deleted. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action. Fields: Forensics","Forensics, Windows, Linux"
+ProcessTrace,,"Linux, Falcon Container"
+InstanceMetadata,Metadata information about the instance on which the sensor is running.,"macOS, Kubernetes, Windows, Linux, Falcon Container"
+FileAccessOperationOverSMB,File access operations over a SMB user session.,Windows
+K8SSnapshot,Fields: Kubernetes,Kubernetes
+K8SWatchStarted,Fields: Kubernetes,Kubernetes
+K8SResource,Fields: Kubernetes,Kubernetes
+K8SWatchStopped,Fields: Kubernetes,Kubernetes
+IdpEntityRiskScoreChange,Fields: Public Cloud,Public Cloud
+HostedServiceStarted,"This event is emitted when a hosted service (that is, a service inside a SvcHost.exe binary) is started by the service control manager (SCM). ServiceDisplayName, TargetProcessId, ImageFileName and TargetThreadId are all for the new service. TargetThreadId is the primary thread of the new hosted service. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action. Also, starting and stopping hosted services multiple times during boot might not always show up in this event due to caching done by the SCM.",Windows
+NetShareAdd,This event is generated when a network share is added or modified on a host.,Windows
+UserAccountCreated,"This event is generated when a new user account is created. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action.","Windows, Linux"
+ServiceStarted,"This event is generated when a standalone service is started by the service control manager (SCM). ServiceDisplayName, TargetProcessId, ImageFileName and CommandLine are all for the new service. The data will indicate the initial process (command- line tool, custom utility, or GUI application) or remote address/host name that resulted in this action.",Windows
+ScheduledTaskDeleted,"This event is sent when Falcon has detected that a scheduled task has been removed from the machine. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action. Note that the context here is not sufficient to determine full details on the task being removed (that is captured in ScheduledTaskRegistered), but does show the task name and originator info.",Windows
+FirewallSetRule,"A firewall rule has been created or modified, such as a rule allowing inbound RDP connections. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action.",Windows
+FirewallDeleteRule,"A firewall rule has been deleted, such as removing a rule preventing inbound RDP connections. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action.",Windows
+FirewallChangeOption,"A firewall configuration option has been changed, such as enabling or disabling the firewall. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action.",Windows
+UserAccountAddedToGroup,"This event is generated when an existing user account is added to an existing group. The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action. The group RID will indicate which group this user was added to. Of interest, for example, is a user being added to the “Administrators” group.","Windows, Linux"
+BITSJobCreated,The event is generated when a Background Intelligent Transfer Service (BITS) download is created and a new file is dropped on the system.,Windows
+EventLogCleared,This event is generated when a Windows event log is cleared.,Windows
+ScheduledTaskRegistered,"This event is sent when Falcon detects that a scheduled task has been added to the machine, either locally or remotely. This includes things added via the at command (at.exe) or scheduled tasks (schtasks.exe). The data will indicate the initial process (command-line tool, custom utility, or GUI application) or remote address/hostname that resulted in this action. This service has multiple versions over time from Windows 7 to Windows 10, so some fields may not be available in all versions. The raw TaskXml will always be available, which should be a superset of the other ‘Task’ fields.",Windows
+NetShareDelete,This event is generated when a network share is removed from a host.,Windows
+NetShareSecurityModify,This event is generated when the security descriptor of a network share is changed.,Windows
+VolumeSnapshotCreated,A volume snapshot has been created.,Windows
+VolumeSnapshotDeleted,A volume snapshot has been deleted.,Windows
+VolumeSnapshotOperationBlocked,"Event describing a snapshot volume block operation. IFN and CL are based upon the RpcProcessId, in VSS operations only RPC tree is relevant.","Windows, Windows"
+MemoryScanErrorEvent,,Windows
+ServiceStopped,"This event is emitted when a standalone service is stopped by the service control manager (SCM). Unfortunately, the sensor is not currently capable of identifying who requested this operation. However, it can be used to confirm that this is a service stopping vs. a service crashing or being terminated.",Windows
+SuspiciousPeFileWritten,A suspicious PE image file was written to disk.,Windows
+PodInfo,Metadata associated with a Kubernetes pod.,"Linux, Falcon Container"
+DmpFileWritten,Emitted when a process is done writing a dump file. PidFromCommandLine will be enhanced in some cases to extract out the pid from the commandline of the writing process if possible.,"Windows, macOS, Linux"
+SevenZipFileWritten,This event is generated when a 7ZIP file type (.7zip) is written to disk.,"Windows, macOS, Linux"
+PdfFileWritten,This event is generated when a PDF file type (.pdf) is written to disk.,"Windows, macOS, Linux"
+OleFileWritten,This event is generated when a file a Microsoft Office (Pre-Office 2007) file type is written to disk.,"Windows, macOS, Linux"
+RarFileWritten,Emitted when a process is done writing a RAR file.,"Windows, macOS, Linux"
+OoxmlFileWritten,This event is generated when a Microsoft Office (Post-Office 2007) file type is written to disk.,"Windows, macOS, Linux"
+ZipFileWritten,This event is generated when a ZIP file type (.zip) is written to disk.,"Windows, macOS, Linux"
+RtfFileWritten,Emitted when a process is done writing an RTF file.,"Windows, macOS, Linux"
+PeFileWritten,"This event is generated when a Windows Portable Executable file type is written to disk. The difference between a NewExecutableWritten event and PeFileWritten is that NewExecutableWritten looks for the extension of a file written, while PEFileWritten looks for the PE header in a file that was written.","macOS, Linux, Windows"
+XarFileWritten,Emitted when a process is done writing a Xar file. macOS installer files are of this type.,"Windows, macOS, Linux"
+BZip2FileWritten,Emitted when a process is done writing a BZip2 file.,"Windows, macOS, Linux"
+MachOFileWritten,Emitted when a process is done writing a MachO file.,"Windows, macOS, Linux, Windows, macOS, Linux"
+IdwFileWritten,Emitted when a process is done writing an IDW file.,Windows
+DwgFileWritten,An event that is emitted when a process is done writing to a DWG file.,Windows
+ELFFileWritten,Emitted when a file has been written that contains a real ELF image header.,"Windows, macOS, Android, Linux"
+GzipFileWritten,Emitted when a file has been written that contains a real Gzip image header.,"Windows, macOS, Linux"
+JavaClassFileWritten,Emitted when a process is done writing a Java Class file.,"Windows, macOS, Linux"
+CabFileWritten,Emitted when a process is done writing a Microsoft Cabinet (CAB) file.,"macOS, Windows, Linux"
+ArcFileWritten,Emitted when a process is done writing a ARC file.,"Windows, macOS, Linux"
+TiffFileWritten,,"Windows, macOS, Linux"
+ArjFileWritten,Emitted when a process is done writing a ARJ file.,"macOS, Windows, Linux"
+VmdkFileWritten,,"Windows, macOS, Linux"
+JpegFileWritten,Emitted when a process is done writing a Jpeg image file.,"Windows, macOS, Linux"
+BmpFileWritten,Emitted when a process is done writing a BMP image file.,"Windows, macOS, Linux"
+GifFileWritten,Emitted when a process is done writing a GIF image file.,"macOS, Windows, Linux"
+PngFileWritten,,"macOS, Windows, Linux"
+MSXlsxFileWritten,,"Windows, macOS, Linux"
+MSPptxFileWritten,,"Windows, macOS, Linux"
+VdiFileWritten,,"Windows, macOS, Linux"
+MSDocxFileWritten,,"Windows, macOS, Linux"
+MSVsdxFileWritten,,"macOS, Windows, Linux"
+DxfFileWritten,,"Windows, Windows"
+RpmFileWritten,,"Windows, macOS, Linux"
+DebFileWritten,,"Windows, macOS, Linux"
+BlfFileWritten,Emitted when a process is done writing an BLF file.,"macOS, Windows, Linux"
+MsiFileWritten,,"Windows, macOS, Linux"
+LnkFileWritten,,"Windows, macOS, Linux"
+DmgFileWritten,,"Windows, macOS, Linux"
+EmailFileWritten,,"Windows, macOS, Linux"
+EmailArchiveFileWritten,,macOS
+EseFileWritten,,"macOS, Windows, Linux"
+RegistryHiveFileWritten,,Windows
+ADExplorerFileWritten,,Windows
+WebScriptFileWritten,,"Windows, macOS, Linux"
+CrxFileWritten,,"Windows, macOS, Linux"
+PythonFileWritten,,Windows
+HttpRequestDetect,An event that indicates a detection on an HTTP(S) request.,Windows
+HttpRequest,,"Linux, macOS"
+DcBluetoothDeviceProperties,This event contains properties for a connected Bluetooth device.,"macOS, Windows"
+IdpCloudHealthStatus,,Windows
+DiskCapacity,"An event that contains information about disks, the quantity of disks, and the storage capability of disks. The event is sent when the sensor connects, every 24 hours thereafter, and in case any change in disk parameters is detected. An event that contains information about disks, the quantity of disks, and the storage capability of disks that are locally attached to a system. The event is sent when the sensor connects, every 24 hours thereafter, and in case any change in disk parameters is detected.","Windows, Linux"
+MemoryMapped,Triggers when an executable memory region is mapped.,"Linux, Falcon Container"
+TlsClientHello,,"Windows, Linux, macOS"
+SmtpAttachment,,Linux
+SmtpCommand,,Linux
+FtpCommand,,Linux
+NetworkLinkConfigGetLink,,Linux
+NetworkLinkConfigGetAddress,,Linux
+RansomwareFileAccessPattern,Helper event for ransomware file access patterns.,Windows
+AsepFileChangeScanInfo,Rollup indicating an ASEP file has been created or modified but there was no template detection on the contents.,"macOS, macOS"
+BPFCommandIssued,Emitted when a process executes bpf syscall.,"Linux, Falcon Container"
+FileSystemOperationBlocked,An event that indicates that a file system operation has been blocked.,"macOS, Windows"
+SecureTrafficDecrypted,"An event that contains certificate info for the compromised network connection. Fields: Android, iOS","Android, iOS"
+FileSystemOperationDetectInfo,Informational event for a file system operation detection.,Windows
+ModuleBlockedEventWithPatternId,This event adds a potential reason for blocking (as a PatternId) to module blocking information.,"macOS, Linux, Falcon Container, Windows"
+ModuleBlockedEvent,This event is sent to inform cloud about the fact that given module (identified by hash) was blocked.,"macOS, Windows, Linux, Falcon Container"
+ChannelVersionRequired,This event informs the cloud information about the state of a channel on the sensor. The cloud will use this event to decide whether to send the sensor updated channel data.,"Windows, macOS, Linux, Falcon Container, Android, Kubernetes, Vmcluster, iOS"
+LfoUploadDataUnneeded,"Emitted when the sensor initiates a file upload, but the cloud has determined the file is not needed. A specific cloud reason will be provided in LfoUploadCloudStatus.","Windows, macOS, Linux, Android, Kubernetes, Vmcluster"
+LfoUploadDataComplete,Emitted when the LFOUploadActor has successfully uploaded a file to the cloud.,"Windows, macOS, Linux, Android, Kubernetes, Vmcluster"
+LfoUploadDataFailed,Emitted when the sensor has detected error(s) and has decided not to stop uploading a file to the cloud. LfoUploadExtendedStatus will indicate the detailed failure reason.,"Windows, macOS, Linux, Android, Kubernetes, Vmcluster"
+ProvisioningChannelVersionRequired,This event informs the cloud about the state of a channel on the sensor during provisioning. It is only sent when the sensor is in an unprovisioned state.,"Linux, Falcon Container, macOS, Windows, iOS, Android"
+LfoUploadStart,Emitted when the sensor initiates a file upload.,"Windows, macOS, Linux, Android, Kubernetes, Vmcluster"
+NetworkListenIP4,This event is generated when an application establishes a socket in listening mode This event is generated when an application establishes a socket in listening mode.,"Windows, macOS, Android, Linux, Falcon Container, Forensics, ChromeOS"
+NetworkConnectIP6,"This event is created whenever an application using a connection-oriented protocol attempts a remote connection (e.g., via a call to the connect() function) or a connectionless protocol first attempts to transmit a message (e.g., via a call to the sendto() function). This event is generated when an application attempts a remote connection.","Windows, macOS, Android, iOS, Forensics, ChromeOS, Linux, Falcon Container"
+NetworkReceiveAcceptIP4,"This event is generated when an application using a connection-oriented protocol attempts to accept a remote connection request (e.g., via a call to the accept() function) or a connectionless protocol attempts to process the first datagram received.","Windows, macOS, Android, Linux, Falcon Container, Forensics"
+NetworkReceiveAcceptIP6,"This event is created whenever an application using a connection-oriented protocol attempts to accept a remote connection request (e.g., via a call to the accept() function) or a connectionless protocol attempts to process the first datagram received.","Windows, macOS, Android, Linux, Falcon Container, Forensics"
+NetworkCloseIP4,"An event that is generated by an application using a connection-oriented or connectionless protocol attempts to set the socket to the closed state. IPv4 is the source of the connection/connectionless protocol in this event. Note: this event does not guarantee the communication between the two endpoints has ceased, but that a single socket has entered the closed state. An event that is generated by an application using a connection-oriented or connectionless protocol attempts to set the socket to the closed state. This event is also generated when a session is inactive for 5 minutes using UDP. IPv4 is the source of the connection/connectionless protocol in this event. Note: this event does not guarantee the communication between the two endpoints has ceased, but that a single socket has entered the closed state. An event that is generated by an application using a connection-oriented or connectionless protocol attempts to set the socket to the closed state. This event is also generated when a session is inactive for 2 minutes using UDP.IPv4 is the source of the connection/connectionless protocol in this event. Note: this event does not guarantee the communication between the two endpoints has ceased, but that a single socket has entered the closed state.","Windows, Android, Forensics, macOS, Linux, Falcon Container"
+NetworkConnectIP4,This event is generated when an application attempts a remote connection.,"Windows, macOS, Android, iOS, Linux, Falcon Container, Forensics, ChromeOS"
+NetworkListenIP6,"This event is created whenever an application using a connection-oriented protocol establishes a socket in listening mode (e.g., via a call to the listen() function).","Windows, macOS, Android, Linux, Falcon Container, Forensics, ChromeOS"
+FirewallSetRuleIP6,An event that indicates an IPv6 firewall rule has been created. The field 'IsUnique' will be TRUE if we are sending the rule due to a change which was detected while the sensor was running and will be FALSE if the sensor just started and we are sending all the rules.,macOS
+FirewallDeleteRuleIP4,An event that notifies that an Ipv4 firewall rule has been deleted. The field 'IsUnique' will be TRUE if we are sending the rule due to a change which was detected while the sensor was running and will be FALSE if the sensor just started and we are sending all the rules.,macOS
+FirewallDeleteRuleIP6,An event that notifies that an Ipv6 firewall rule has been deleted. The field 'IsUnique' will be TRUE if we are sending the rule due to a change which was detected while the sensor was running and will be FALSE if the sensor just started and we are sending all the rules.,macOS
+FirewallSetRuleIP4,An event that indicates an IPv4 firewall rule has been created. The field 'IsUnique' will be TRUE if we are sending the rule due to a change which was detected while the sensor was running and will be FALSE if the sensor just started and we are sending all the rules.,macOS
+NetworkCloseIP6,"An event that is generated by an application using a connection-oriented or connectionless protocol attempts to set the socket to the closed state. This event is also generated when a session is inactive for 2 minutes using UDP. IPv6 is the source of the connection/connectionless protocol in this event. Note: this event does not guarantee the communication between the two endpoints has ceased, but that a single socket has entered the closed state. An event that is generated by an application using a connection-oriented or connectionless protocol attempts to set the socket to the closed state. IPv6 is the source of the connection/connectionless protocol in this event. Note: this event does not guarantee the communication between the two endpoints has ceased, but that a single socket has entered the closed state. An event that is generated by an application using a connection-oriented or connectionless protocol attempts to set the socket to the closed state. This event is also generated when a session is inactive for 5 minutes using UDP. IPv6 is the source of the connection/connectionless protocol in this event. Note: this event does not guarantee the communication between the two endpoints has ceased, but that a single socket has entered the closed state. An event that is generated by an application using a connection-oriented or connectionless protocol attempts to set the socket to the closed state. This event is also generated when a session is inactive for 10 minutes using UDP. IPv6 is the source of the connection/connectionless protocol in this event. Note: this event does not guarantee the communication between the two endpoints has ceased, but that a single socket has entered the closed state.","Linux, Falcon Container, Windows, Forensics, macOS, Android"
+NetworkConnectIP4Blocked,This event is created whenever a NetworkConnectIP4 event is blocked. This event is created whenever a NetworkConnectIP4 event is blocked because of the IP or the domain/URL being accessed.,"Windows, Android, macOS, iOS"
+NetworkConnectIP6Blocked,This event is created whenever a NetworkConnectIP6 event is blocked. This event is created whenever a NetworkConnectIP6 event is blocked because of the IP or the domain/URL being accessed. Fields: Android,"Android, Windows, macOS, iOS"
+NetworkConnectIP4DetectInfo,This event is sent whenever a connection to malicious IP4 address is detected. Fields: Android,"Android, iOS"
+NetworkConnectIP6DetectInfo,This event is sent whenever a connection to malicious IP6 address is detected. Fields: Android,"Android, iOS"
+RemediationActionKillIP4Connection,Sensor attempted to kill a connection to a malicious IPv4 address. No further data will be sent or received on the connection. Fields: Android,"Android, iOS"
+RemediationActionKillIP6Connection,Sensor attempted to kill a connection to a malicious IPv6 address. No further data will be sent or received on the connection. Fields: Android,"Android, iOS"
+CreateSocket,This event is created whenever a process creates a socket.,"Linux, Falcon Container, Forensics"
+NetworkOutboundPortScanDetectInfo,,Windows
+RawBindIP6,"IPv6 network binding event. Terminating socket is in raw mode. An event that is created when an application using a connection-oriented or connectionless protocol causes a port resource assignment to a socket through a call to bind(). It is a more specific version of the event NetworkBindIP6 indicating a socket is in raw mode. IPv6 is the source of the connection/connectionless protocol in this event. A NetworkBindIP6 event is created whenever an application using a connection-oriented or connectionless protocol causes a port resource assignment to a socket through a call to bind(). The event's ConnectionFlags field describes the parameters of that bind operation. A socket that is bound has not performed any network activity per se. Only a subsequent call to listen() or connect() generates network activity through the bound socket. The attributes of the bind, such as promiscuous mode or raw socket, are available in the ConnectionFlags field. Fields: Forensics","Forensics, Linux, Falcon Container, Android, macOS, Windows"
+RawBindIP4,"IPv4 network binding event. Terminating socket is in raw mode. An event that is created when an application using a connection-oriented or connectionless protocol causes a port resource assignment to a socket through a call to bind(). It is a more specific version of the event NetworkBindIP4 indicating a socket is in raw mode. IPv4 is the source of the connection/connectionless protocol in this event. A NetworkBindIP4 event is created whenever an application using a connection-oriented or connectionless protocol causes a port resource assignment to a socket through a call to bind(). The event's ConnectionFlags field describes the parameters of that bind operation. A socket that is bound has not performed any network activity per se. Only a subsequent call to listen() or connect() generates network activity through the bound socket. The attributes of the bind, such as promiscuous mode or raw socket, are available in the ConnectionFlags field. Fields: Forensics","Forensics, Android, Windows, macOS, Linux, Falcon Container"
+NewScriptWritten,"Emitted when a process is done writing a script file, as determined by #! at the start of the file. This event is generated when a new script is written (e.g. .js, .aspx, .bat, .ps1, .vbs, .lua).","Linux, macOS, Windows"
+PatternHandlingError,This event is emitted when an error occurs in processing a behavior.,"Windows, macOS, Linux, Falcon Container"
+ProcessPatternTelemetry,,"Windows, macOS, Linux"
+ActiveDirectoryIncomingPsExecExecution2,"Indicates remote code execution on a domain controller using PsExec. This event is generated based on a REMOTE_INTERACTIVE type ActiveDirectoryIncomingDceRpcEpmRequest event that correlates with an ActiveDirectoryServiceAccessRequest event to the Common Internet File System (CIFS) or a host Service Principal Name (SPN). This event replaces the ActiveDirectoryIncomingPsExecExecution event, which is now obsolete.",Windows
+IdpPolicyAlertRuleMatch,Fields: Public Cloud,Public Cloud
+BrowserInjectedThread,Indicates a browser process injected a thread into some other process.,Windows
+KernelCallbackTableUpdate,An event that indicates that the ProcessEnvironmentBlock KernelCallbackTable field has been changed from its prior value. This might indicate an attempt to alter one of the callback routines.,"Windows, Windows"
+FileDetectInfo,,"Linux, macOS, Windows"
+IdpPolicyFederatedAccessRuleMatch,Fields: Public Cloud,Public Cloud
+BootLoopProtectionTelemetry,,Windows
+LightningUnresponsiveStatus,,"Windows, macOS"
+AndroidEnterpriseInfo,This event contains metadata related to the state of the device as reported by the Android Management API (AMAPI). Fields: Android,Android
+InjectedThread,"This event is generated when one process injects an execution thread into another process. While often associated with malicious activity, this is also common behavior for certain core operating system processes.",Windows
+JavaInjectedThread,This event is generated when Java injects a thread into another process.,Windows
+DocumentProgramInjectedThread,Indicates a document program process injected a thread into some other process.,Windows
+ActiveDirectoryAuthenticationFailure,Indicates that the Domain Controller handled one or more failed authentications by an account on an endpoint.,Windows
+ActiveDirectoryInteractiveDomainLogon,Indicates an interactive logon to an Active Directry domain handled by a Domain Controller. The interactive logon is combined of initial authentication following by some service access events.,Windows
+SetWindowsHook,An event that is sent from the sensor when a user mode program attempts to set a windows hook.,Windows
+ScriptControlDetectInfo,This event is sent when Falcon has detected malicious script content being executed on the host. This event provides the details of exactly what content was detected.,"macOS, Linux, Windows"
+ActiveDirectoryAuthentication,Indicates that the Domain Controller handled one or more successful authentications by an account on an endpoint.,Windows
+ActiveDirectoryServiceAccessRequestFailure,Indicates that the Domain Controller handled one or more failed service requests from an account on an endpoint. The requests were to a service identified by an Active Directory account.,Windows
+CloudAssociateTreeIdWithRoot,This event is generated when there is a detection in the CrowdStrike cloud. This event has a data field called PatternId which contains a pattern ID. Pattern IDs are associated with a detection.,"Windows, Linux, Falcon Container, macOS, ChromeOS"
+K8SProductConfig,Fields: Kubernetes,Kubernetes
+IdpTelemetryData,,Windows
+IdpPacketDiversionLdapsConnectionsOverloadNotification,,Windows
+DataProtectionArchiveAssessed,Describes an archive processed by Data Protection assessment. Top level event fields are properties of enclosing archive file (e.g. Size),"Windows, macOS"
+FileTimestampsModified,An event that is emitted when a change occurs to the timestamps of a file.,"Windows, Linux, Falcon Container"
+VMClusterInfo,Event sent periodically to let the cloud know that the sensor is running with the following VM cluster data. Fields: Vmcluster,Vmcluster
+VmcSensorStatus,This event is sent to provide VMC sensor operational status. Fields: Vmcluster,Vmcluster
+VmcVmAsset,This event is sent to provide VMware vCenter VM information. Fields: Vmcluster,"Vmcluster, Windows"
+InboundHttpParsingStatus,,"Windows, macOS, Linux"
+InstalledBrowserExtension,"An event that contains information about installed browser extensions, including updates and removals. The event is sent when the sensor connects and every 48 hours thereafter. If no browser extensions are identified, a default event indicating no-extension-available is sent to the CrowdStrike cloud.","Windows, macOS"
+BrowserExtensionStatus,,"macOS, Windows, macOS, Linux, Falcon Container, Windows Legacy"
+AssociateIndicator,"This event is generated when the sensor generates an indicator. An indicator is like a detection event (AssociateTreeIdWithRoot) except that it is not necessarily malicious, either because it is just an indicator (e.g. when a process opens the Recycle Bin) or because CrowdStrike is not yet confident enough in the indicator to trigger it as a detection. Note that a detection, unlike an indicator, establishes a detection tree (AssociateTreeIdWithRoot) which causes the sensor to send additional information for that process tree for analysis/hunting purposes. An indicator is just a single event that has no other sensor impact.","Windows, Linux, Falcon Container, macOS"
+FirewallRuleIP6Matched,"An event that indicates that a firewall rule has matched an IPv6 connection attempt. For situations where RuleMatchCountSinceLastReport > 1, the extra data, like process info, will be from only the most recent match. An event that indicates that a firewall rule has matched an IPv6 connection attempt. For situations where RuleMatchCountSinceLastReport > 1, the extra data, like process info, will be from only the most recent match.","Windows, macOS, Linux"
+FirewallRuleIP4Matched,"An event that indicates that a firewall rule has matched an IPv4 connection attempt. For situations where RuleMatchCountSinceLastReport > 1, the extra data, like process info, will be from only the most recent match. An event that indicates that a firewall rule has matched an IPv4 connection attempt. For situations where RuleMatchCountSinceLastReport > 1, the extra data, like process info, will be from only the most recent match.","Windows, macOS, Linux"
+NamedMutantHandleClosedTelemetry,An event that indicates that a process closed a handle to a known bad named mutex.,"Windows, Windows"
+ProcessControl,,"Linux, Falcon Container"
+ClassifiedModuleLoad,"The ClassifiedModuleLoad event provides information about a module which has been loaded into a process's memory space. It is only generated for 'classified' module loads, that is module loads that are interesting enough for us to cloud.",Windows
+ProcessExecOnPackedExecutable,An event that contains telemetry data emitted on execution of a PE file which is known to be packed. The packer type is indicated by the FileSubType field.,Windows
+IdpCloudHealthConfigurationsGetResponse,,Windows
+ModuleDetectInfo,This event identifies a scenario that would be a blocking prevention if more rigorous settings were active.,"macOS, Linux, Falcon Container, Windows"
+AppSideLoaded,An event that contains the package name and installer info of the app that has been installed outside of the Google PlayStore. Fields: Android,Android
+MobileAppIdentifiers,An event that describes details about a mobile application package. Fields: Android,Android
+RegValueQueryDetectInfo,,Windows
+WmiQueryDetectInfo,,Windows
+DriverLoadedV2DetectInfo,,"Windows, Windows"
+DotnetModuleLoadDetectInfo,,Windows
+PtTelemetry,,Windows
+ModuleLoadV3DetectInfo,Additional information for detections from the Module Load V3 template.,Windows
+IdpDcTiConfiguration,,Windows
+SmbServerShareOpenedEtw,An event that indicates a remote machine opening a local share. This event is supported on all Windows platform except 8.1 and Server 2012 R2.,Windows
+IdpWatchdogRemediationActionTaken,,Windows
+IdpWatchdogRemediationActionTakenForMemory,,Windows
+DBusMessage,An event that generates telemetry that provides visibility into D-Bus messages flowing over local Unix sockets between processes. The sensor will produce events for each message and apply any relevant detections.,Linux
+FirewallRuleIP4,Fields: Forensics,Forensics
+InboundHttpHeader,,"Linux, macOS, Windows"
+InternetExposureData,,"macOS, Linux, Windows"
+SyntheticSystemdServiceCreated,,Linux
+SystemdTimerDeleted,,Linux
+RouteIP6,IPv6 Route entry. Fields: Forensics,Forensics
+DnsServer,DNS server IP addresses. Fields: Forensics,Forensics
+BrowserProxyInfo,Browser proxy information. Fields: Forensics,Forensics
+SpotlightSearchEntry,Per-user spotlight search information. Fields: Forensics,Forensics
+RegSystemConfigKeyUpdate,,Windows
+SudoCommandAttempt,,macOS
+NamedPipeDetectInfo,Named pipe detect telemetry event,Windows
+NetworkEndPointDataUsage,This event has total counts of sent/received octets/packets to/from the network-attached end point during active connection. The counting window is the life of the end point. Fields: Forensics,Forensics
+UsbDeviceInfo,Information on each USB device attachment. Fields: Forensics,Forensics
+UserAccountRemovedFromGroup,,"Linux, Windows"
+SensorEnteredSafemode,,"macOS, Linux, Falcon Container, Windows"
+PtyDetached,,Linux
+SystemdServiceCreated,,Linux
+IdpCloudHealthCheck,,Windows
+SmbServerLocalNamedPipeOpenedEtw,,Windows
+OpenDirectoryAttributeSet,,macOS
+OpenDirectoryAttributeRemove,,macOS
+RegGenericKeyUpdate,,Windows
+TerminalSavedStateInfo,MacOS terminal saved state information. Fields: Forensics,Forensics
+OpenDirectoryAttributeAdd,,macOS
+OpenDirectoryGroupSet,,macOS
+ActiveDirectoryAuditGpoModified,,Windows
+FirewallRuleIP6,Fields: Forensics,Forensics
+KernelParameter,Fields: Forensics,Forensics
+UserGroupCreated,,Linux
+SystemdServiceDeleted,,Linux
+ScheduledTaskInfo,Scheduled windows tasks. Fields: Forensics,Forensics
+ProcessDataUsage,Measurements and statistics of data traffic sent and received to/from the target process. Fields: Forensics,Forensics
+WSLVMStopping,The Linux Virtual Machine Root Namespace is stopping.,Windows
+SyntheticSystemdTimerCreated,,"Linux, Windows"
+NetShareInfo,Shared resource information. Fields: Forensics,Forensics
+OsUpdateTimestamp,Operating system update timestamp. Fields: Forensics,Forensics
+NetworkDnsSuffix,A network suffix name in the configured DNS suffix list. Fields: Forensics,Forensics
+NetworkHostsFileEntry,A host name entry in the network hosts file. Fields: Forensics,Forensics
+ActiveDirectoryAuditPasswordModificationAttempt,,Windows
+ProcessSignal,,Linux
+ProcessInjection,An event that indicates that a remote process wrote and executed code.,Windows
+SpotlightEntitySystemState,Spotlight Entity heart-beat event to notify cloud of current state with last synced batch and Channel file version information.,"Windows, macOS, Linux"
+ConfigurationProfileModified,,macOS
+OpenDirectoryDeleteUser,,macOS
+LogonBehaviorCompositionDetectInfo,,Windows
+OpenDirectoryGroupAdd,,macOS
+DnsCache,An entry observed within the system's DNS Cache. Fields: Forensics,Forensics
+WindowsTimelineEntryTimestamp,Fields: Forensics,Forensics
+BrowserAccountInfo,Browser user account information. Fields: Forensics,Forensics
+BrowserHistoryClearInfo,Browser history clearing event information. Fields: Forensics,Forensics
+ForensicsCollectorOffline,Final event of a Forensics collection. Fields: Forensics,Forensics
+ForensicsCollectorOnline,Marks the beginning of a Forensics collection. Fields: Forensics,Forensics
+WmiQuery,Windows Management Instrumentation (WMI) query status. Fields: Forensics,Forensics
+FilesStatisticInfo,Files statistic information. Fields: Forensics,Forensics
+BrowserCookieInfo,Browser tracking cookie information. Fields: Forensics,Forensics
+WSLDistributionUnregistered,A user unregisters a Linux distribution.,Windows
+SystemdTimerCreated,,Linux
+WSLDistributionStopping,The Linux distribution is stopping.,Windows
+DriverLoadBlocked,Event which indicates we successfully blocked a driver from loading.,Windows
+SigningPublicKey,,"iOS, Android"
+FsVolumeReadInfo,,Windows
+IdpWatchdogRemediationActionRequest,,Windows
+ActiveDirectoryAuditGroupModified,,Windows
+ActiveDirectoryIncomingDceRpcRequest,Indicates that the Domain Controller must handle one or more incoming DCE/RPC requests from an account on an endpoint.,Windows
+DcRemovableStorageDeviceConnected,,"Windows, macOS"
+DcRemovableStorageDeviceDisconnected,,"Windows, macOS"
+ScriptControlDotNetMetadata,Contains the last 56kb of ScriptContent from a .NET AMSI scan.,Windows
+GroupAccount,Describes an observed group account. Fields: Forensics,Forensics
+PrefetchFile,Prefetch or Layout file records 8 most recent execution times of a Windows application. Fields: Forensics,Forensics
+BrowserHistoryVisit,Browser history hit information. Fields: Forensics,Forensics
+EventTapInfo,Describes a macOS Event Tap. Event Taps allow for capturing of keyboard and mouse HID events. Fields: Forensics,Forensics
+LoginItemAdded,,macOS
+IdpPolicyCloudAccessRuleMatch,Fields: Public Cloud,Public Cloud
+SuspiciousUserRemoteAPCAttempt,An event that indicates that a remote APC (Asynchronous Procedure Call) that is classified as potentially suspicious was queued on the target process by the context process.,Windows
+SuperfetchAppInfo,Application entry from Windows Superfetch AgForegroundAppHistory.db. Fields: Forensics,Forensics
+ForensicsCollectorLog,A log entry emitted by the Falcon Forensics Collector process. Fields: Forensics,Forensics
+RuntimeEnvironmentVariable,"Environment Variable provided to a process; In the context of falcon forensics, this is an environment variable provided to the collector process itself. Fields: Forensics",Forensics
+MftBootSector,Windows Master File Table (MFT) Boot sector. Fields: Forensics,Forensics
+UserAssistAppLaunchInfo,Application launched via user-assisted GUI menu. Fields: Forensics,Forensics
+IdpWatchdogRemediationActionTakenForCpu,,Windows
+GetAsyncKeyStateEtwBatch,An event that indicates that an application called the GetAsyncKeyState API multiple times.,Windows
+NamedPipe,Named pipe information. Fields: Forensics,Forensics
+ProcessHandleTableEntry,An entry in a process handle table referencing a kernel object. Fields: Forensics,Forensics
+DataEgress,Description of a data egress observed on the sensor.,"Windows, macOS"
+WSLDistributionStarted,The Linux distribution starts.,Windows
+FileSignatureStatistics,On-demand scan for files with name extensions and header magic values. Fields: Forensics,Forensics
+WSLDistributionRegistered,A user registers a Linux distribution but hasn’t started it yet.,Windows
+SuperfetchAppSchedule,Application running schedule/period recently updated from Windows Superfetch AgGlobalHistory.db. Fields: Forensics,Forensics
+WSLVMStarted,The Linux Virtual Machine Root Namespace starts.,Windows
+LocalGroupIdentity,"Group identity information includes user group name, GID, and names, UIDs and sid of user members. Fields: Forensics",Forensics
+BrowserExtensionInfo,Browser extension/addon information. Fields: Forensics,Forensics
+DcBluetoothAuthorizationStatus,,macOS
+UserGroupDeleted,,Linux
+GcpAsset,An event that contains GCP (Google Cloud Platform) Organization Metadata. Fields: Public Cloud,Public Cloud
+GcpComputeFirewall,An event that contains GCP (Google Cloud Platform) Compute Image configuration details. Fields: Public Cloud,Public Cloud
+AzureVirtualMachineState,An event that contains the machine state for any Azure virtual machine. Fields: Public Cloud,"Public Cloud, Public Cloud"
+GcpComputeNetworkPeering,An event that contains GCP (Google Cloud Platform) Compute Network Peering configuration details. Fields: Public Cloud,Public Cloud
+GcpComputeInstance,An event that contains GCP (Google Cloud Platform) Compute Instance configuration information. Fields: Public Cloud,Public Cloud
+GcpComputeNetwork,An event that contains GCP (Google Cloud Platform) Compute Network configuration information. Fields: Public Cloud,Public Cloud
+GcpComputeDisk,An event that contains GCP (Google Cloud Platform) Compute Disk Configuration details. Fields: Public Cloud,Public Cloud
+GcpComputeSubnetwork,An event that contains GCP (Google Cloud Platform) Compute Subnetwork configuration details. Fields: Public Cloud,Public Cloud
+AzureIpConfiguration,An event that contains a list of Azure IP configurations and attributes of the Azure IP configurations. Fields: Public Cloud,Public Cloud
+AzureVirtualNetwork,An event that contains a list of the Azure virtual networks and the Azure virtual network attributes. Fields: Public Cloud,Public Cloud
+GcpIamServiceAccount,An event that contains GCP (Google Cloud Platform) IAM Service Account configuration details. Fields: Public Cloud,Public Cloud
+AzureSubscription,An event that contains a list of Azure subscriptions. Fields: Public Cloud,Public Cloud
+AzureNetworkInterface,An event that contains a list of Azure network interfaces and the Azure network interface attributes. Fields: Public Cloud,Public Cloud
+GcpComputeImage,An event that contains GCP (Google Cloud Platform) Compute Image configuration details. Fields: Public Cloud,Public Cloud
+AzureResourceGroup,An event that contains a list of Azure Resource Groups. Fields: Public Cloud,Public Cloud
+AzureDisk,An event that contains a list of Azure disks and their attributes. Fields: Public Cloud,Public Cloud
+AzureVirtualMachine,An event that contains a list of Azure virtual machines and the Azure virtual machine attributes. Fields: Public Cloud,Public Cloud
+AzureSubnet,An event that contains Azure sub-networks in the virtual network. Fields: Public Cloud,Public Cloud
+AzurePublicIpAddress,An event that contains Azure public IP addresses. Fields: Public Cloud,Public Cloud
+AzureNetworkSecurityGroup,An event that contains information about an Azure Network Security Group. Fields: Public Cloud,Public Cloud
+AzureVirtualNetworkPeering,An event that contains a list of the Azure virtual networks and the Azure virtual network attributes. Fields: Public Cloud,Public Cloud
+AzurePrivateEndpoint,An event that connects Azure Network interface to other services with private links. Fields: Public Cloud,Public Cloud
+EksNodeGroup,Snapshot of an AWS EKS node group. Fields: Public Cloud,Public Cloud
+EksCluster,Snapshot of an AWS EKS cluster. Fields: Public Cloud,Public Cloud
+K8SDeployment,Snapshot of a deployment object in Kubernetes. Fields: Public Cloud,Public Cloud
+K8SReplicaSet,Snapshot of a Replica Set object in Kubernetes. Fields: Public Cloud,Public Cloud
+K8SDaemonSet,Snapshot of a Daemon Set object in Kubernetes. Fields: Public Cloud,Public Cloud
+EksFargateProfile,Snapshot of an AWS EKS Fargate profile. Fields: Public Cloud,Public Cloud
+IdpWatchdogConfigurationsGetResponse,,Windows
+FileContentsChanged,,Linux
+SruApplicationTimelineProvider,System Resource Utilization Monitor: application resource usage timeline. Fields: Forensics,Forensics
+ShellBagFileTimeStampMetadata,One event is emitted per timestamp from a ShellBag registry entry. Fields: Forensics,Forensics
+SyscacheEntry,An entry in windows syscache hive. Fields: Forensics,Forensics
+BITSJobMetadata,"Background Intelligent Transfer Service (BITS) job metadata: times, proxy. Fields: Forensics",Forensics
+RegCrowdstrikeValueUpdate,,Windows
+BrowserDownloadStarted,Browser downloaded file information signifying download start time. Fields: Forensics,Forensics
+BrowserDownloadEnded,Browser downloaded file information signifying download end time. Fields: Forensics,Forensics
+OdsScanComplete,On-demand scan for files with name extensions and header magic values. Fields: Forensics,Forensics
+AutoRunProcessInfo,Describes a process that is automatically executed. Fields: Forensics,Forensics
+PeSectionInfo,Windows Portable Executable (PE) section information. Fields: Forensics,Forensics
+ShellBagInfo,Windows ShellBag MRU registry entry. Fields: Forensics,Forensics
+PeHeaderOptionalInfo,Portable Executable optional header information from a Windows executable. Fields: Forensics,Forensics
+RemoteThreadCreate,,macOS
+ActiveDirectoryAuditGroupMemberModified,,Windows
+RouteIP4,IPv4 Route entry. Fields: Forensics,Forensics
+PeFileWrittenDetectInfo,,Windows
+MachOHeaderParsed,A MachO file was read into memory from disk and its header was parsed.,macOS
+MemoryLocked,,Linux
+VulnerableDriverDetectInfo,,Windows
+DeliverRulesEngineResultsToCloud,,"Windows, Linux, macOS"
+AtJobInfo,Windows At jobs in use. Fields: Forensics,Forensics
+HttpResponse,,"Linux, macOS"
+PcaAppLaunchEntry,An application launch entry in windows Program Compatibility Assistant (PCA) file PcaAppLaunchDic.txt. Fields: Forensics,Forensics
+SyntheticPR2Stats,,macOS
+PcaGeneralDbEntry,An application launch entry in windows Program Compatibility Assistant (PCA) database PcaGeneralDb[0-9]+.txt. Fields: Forensics,Forensics
+SyntheticVirtualMemoryArea,,Linux
+VirtualMemoryArea,,Linux
+FileOfInterestBasicInfo,,"macOS, Windows, Linux"
+FalconProcessHandleOpDetectInfo,,Windows
+ScriptFileContentsDetectInfo,,Windows
+DnsRequest,"When a process on a host generates a DNS query, the sensor waits for the response, to generate a DnsRequest that contains the queried domain and information returned in the response such as IP-addresses. On Win/Lin sensor the data is deduplicated based on DomainName, IP4, IP6 and CNAME. Meaning if multiple requests are made that have responses containing different IP addresses for a single domain, they will all be visible. The sensor clears deduplication entries every 24 hrs after the first DnsRequest for the specific process is received. When a process on a host generates a DNS query, the sensor waits for the response, to generate a DnsRequest that contains the queried domain and information returned in the response such as IP-addresses. When a process on a host generates a DNS query, the sensor waits for the response, to generate a DnsRequest that contains the queried domain and information returned in the response such as IP-addresses. On Mac the data is deduplicated just on DomainName. The sensor clears deduplication entries every 24 hrs after the first DnsRequest for the specific process is received. When a process on a host generates a DNS query, the sensor waits for the response, to generate a DnsRequest that contains the queried domain and information returned in the response such as IP-addresses.","Windows, Linux, Android, macOS, iOS"
+ArchiveMemberInfo,Archive member file information. Fields: Forensics,Forensics
+FileSystemContainmentStatus,,Windows
+SystemExtension,Describes a macOS system extension identified by the collector. Fields: Forensics,Forensics
+SharedObjectLoaded,,"Linux, Linux, Falcon Container, Windows, macOS"
+SignInfo,Sent by FalconForensicsCollector containing information about the signing-state of an image.,"macOS, Windows, Forensics"
+MalPaths,Malicious DLL or executable image name conflicts found in different or unexpected folders. Fields: Forensics,Forensics
+AppleScriptFileWritten,,"Windows, macOS, Linux"
+LzfseFileWritten,,"macOS, Windows, Linux"
+FileTimestampMetadata,"FileTime event is emitted per timestamp for a given file. This helps analysts build a timeline of file creation, access, and modification. Fields: Forensics",Forensics
+BITSJobFileInfo,Background Intelligent Transfer Service (BITS) job file information. Fields: Forensics,Forensics
+LinkFileInfo,Link file information. Fields: Forensics,Forensics
+LogEntry,A log entry observed on an endpoint. Fields: Forensics,Forensics
+FileEntry,"Some portion of a text file, either a single line or matched regular expression. Fields: Forensics",Forensics
+PtyAttached,,Linux
+PeHeaderInfo,Portable Executable header information from a Windows executable. Fields: Forensics,Forensics
+EntropyScan,"File contents entropy, useful for identifying potentially malicious files. Fields: Forensics",Forensics
+LSQuarantineEvent,Fields: Forensics,Forensics
+PemFileWritten,,"Linux, Windows, macOS"
+RecentExecutionTimestamp,Recent execution timestamp from a Forensics artifact. Fields: Forensics,Forensics
+ArchiveInfo,Archive file information. Fields: Forensics,"Forensics, Forensics"
+FileWrittenWithEntropyHigh,,"Windows, Linux"
+MftRecord,Windows Master File Table (MFT) record. Fields: Forensics,Forensics
+XzFileWritten,,"Windows, macOS, Linux"
+SyntheticSharedObjectLoaded,,Linux
+AmcacheEntry,Metadata related to PE execution and program installation on Windows 7 and Server 2008 R2 and above. Fields: Forensics,Forensics
+MemoryAdvise,,Linux
+WebShellDetected,"To identify webshell script files in a target folder, the content of each text file is matched against a large built-in list of regular expressions. Fields: Forensics",Forensics
+UserEatAccessMonitoring,,Windows
+ClassifiedProcessStart,,Windows
+PromiscuousBindIP4,This is a reified NetworkBindIP4 indicating a socket is in promiscuous mode.,"Windows, Windows, Linux, macOS"
+DcUsbDevicePolicyViolation,An event that indicates a USB device that matched a rule in a policy but was not blocked due to the rule being set to reporting mode only.,"macOS, Windows, Linux"
+DcBluetoothDeviceBlocked,,macOS
+DcBluetoothDevicePolicyViolation,,macOS
+SruApplicationResourceUsage,System Resource Utilization Monitor: application resource usage per user. Fields: Forensics,Forensics
+NtfsLinkCreatedDetectInfo,,Windows
+IPCDetectInfo,,Windows
+MacKnowledgeActivityStart,An entry from a knowledgeC database indicating the start of some user activity on a MacOs system. Fields: Forensics,Forensics
+MemoryProtectionChanged,,Linux
+ScheduledTaskTemplateDetectInfo,,Windows
+DcRemovableStorageDeviceBlocked,,"Windows, macOS"
+DcRemovableStorageDevicePolicyViolation,,"Windows, macOS"
+ResourceLimit,,Linux
+RegFeatureUsageInfo,Fields: Forensics,Forensics
+HttpRequestV2Detect,,"Windows, Windows"
+HostedServiceStatusInfo,Status information includes loaded DLL for a hosted service. Fields: Forensics,Forensics
+RegCrowdstrikeKeyUpdate,,Windows
+K8SInitContainerStatus,Snapshot of an Initialization(Init) Container belonging to a Pod Fields: Public Cloud,Public Cloud
+AzureNatFirewallRule,An event that contains Azure firewall rules for LAN. Fields: Public Cloud,Public Cloud
+ActiveDirectoryIncomingLdapSearchRequest,Indicates that the Domain Controller must handle one or more LDAP search requests from an account on an endpoint.,Windows
+AksCluster,Snapshot of an Azure AKS cluster. Fields: Public Cloud,Public Cloud
+AksAgentPool,Snapshot of an Azure AKS Agent Pool. Fields: Public Cloud,Public Cloud
+K8SPod,Snapshot of a Pod object in Kubernetes. Fields: Public Cloud,Public Cloud
+K8SService,Snapshot of a Service object in Kubernetes. Fields: Public Cloud,Public Cloud
+K8SNode,Snapshot of a Node object in Kubernetes. Fields: Public Cloud,Public Cloud
+K8SRunningContainer,Snapshot of a running Container belonging to a Pod. Fields: Public Cloud,Public Cloud
+AzureFirewall,An event that contains information about Azure cloud-based network security service. Fields: Public Cloud,Public Cloud
+AzureFirewallRuleCollection,"An event that contains Azure firewall rule collections for application, NAT (network address translation) and network firewall rules. Fields: Public Cloud",Public Cloud
+AzureNetworkSecurityGroupRule,An event that contains Azure security rules in the specified network security group. Fields: Public Cloud,Public Cloud
+K8SEphemeralContainer,Snapshot of an ephemeral Container belonging to a Pod. Fields: Public Cloud,Public Cloud
+K8SRunningContainerStatus,Snapshot of status for a running Container inside a Pod. Fields: Public Cloud,Public Cloud
+AksVMSS,Snapshot of an Azure Virtual Machine Scale Sets. Fields: Public Cloud,Public Cloud
+K8SInitContainer,Snapshot of status for an Initialization(Init) Container inside a Pod. Fields: Public Cloud,Public Cloud
+AzureApplicationFirewallRule,An event that contains firewall rules for https traffic or Azure SQL traffic. Fields: Public Cloud,Public Cloud
+BamRegAppRunTime,Recent program execution timeline from Background Activity Moderator (BAM) system service registry. BAM key is written on system shutdown. Fields: Forensics,Forensics
+ScriptControlDetectInvalidInfo,,"Linux, Falcon Container"
+UserAccount,Describes an observed user account. Fields: Forensics,Forensics
+JumpListInfo,Fields: Forensics,Forensics
+RegShimCache,Shim cache registry entry. Fields: Forensics,Forensics
+ActiveDirectoryAuditUserModified,,Windows
+KernelExtension,Describes a macOS kernel extension identified by the collector. Fields: Forensics,Forensics
+AzureNetworkFirewallRule,An event that contains Azure network filtering rules. Fields: Public Cloud,Public Cloud
+ActiveDirectoryAccountDirectContainingGroupEntitiesUpdate,,Windows
+ActiveDirectoryAccountFlattenedContainingGroupEntitiesUpdate,,Windows
+ConfigStateUpdate,"Sent periodically and when dynamic config is updated. Analysts can find out which config was active using this event with ConfigStateHash. You may have to reason about what a particular hash really means for a particular event at a given point in time, particularly if the hash has recently changed.","Windows, macOS, Linux, Falcon Container, iOS, Android, Kubernetes, Windows Legacy, Vmcluster"
+LFODownloadConfirmation,Thrown when the agent receives an LFODownload event.,"Windows, macOS, Linux, Falcon Container, Android, iOS, Kubernetes, Vmcluster"
+ASLRBypassAttempt,"Emitted when a process that applied ForceASLR to a module detects an invalid execution attempt. This should only happen during an exploit, when the initial ROP chain is designed to defeat ASLR. In the case of a typical ALSR bypass attempt (trying to utilize code in a rebased image as part of a ROP chain), TargetAddress and ExceptionAddress will likely be identical, as will ImageFileName and SourceFileName.",Windows
+HeapSprayAttempt,Emitted when a process that had HeapSpray protections applied detects an invalid execution attempt.,Windows
+SEHOverWriteAttempt,"An event that is emitted when a UserException event has failed a SEH (Structured Exception Handler) validation. The nature of the failure is described by the bitmask SEHValidationFailureFlags. Depending on the type of failure, ExceptionHandlerAddress field or ExceptionFrameAddress field may not be present.",Windows
+SsoUserLogon,"Indicates an initial, successful sign-in to an SSO facilitator, which could be either an IDaaS directory, a federation portal, or a combination of both, such as Azure with AD-FS. Fields: Public Cloud",Public Cloud
+SsoUserLogonFailure,"Indicates an initial, failed sign-in to an SSO facilitator, which could be either an IDaaS directory, a federation portal, or a combination of both, such as Azure with AD-FS. Fields: Public Cloud",Public Cloud
+SsoApplicationAccess,"Indicates successful access to an application through an SSO facilitator, which could be either an IDaaS directory, a federation portal, or a combination of both, such as Azure with AD-FS. Fields: Public Cloud",Public Cloud
+AdditionalHostInfo,Serves as an addition to kernel-driven HostInfo event. Provides host-specific machine information from user mode. ObjectGuid is optional because a given host may not be joined to a domain.,"Windows, macOS"
+AndroidModuleStateUpdate,Status information of modules for the Android sensor. AndroidModuleId lists available modules. Fields: Android,Android
+SsoApplicationAccessFailure,"Indicates failed access to an application through an SSO facilitator, which could be either an IDaaS directory, a federation portal, or a combination of both, such as Azure with AD-FS. Fields: Public Cloud",Public Cloud
+UserAccessLogEntry,Per-user access log information for the year for a service role and IP address pair on Windows servers. Fields: Forensics,Forensics
+FileSignatureMismatch,On-demand scan for files with name extensions and header magic values. Fields: Forensics,Forensics
+RemoteProcessMemoryWrite,,Linux
+FileHashesEvent,Fields: Forensics,Forensics
+WindowsTimelineEntry,Fields: Forensics,Forensics
+OpenDirectoryGroupRemove,,macOS
+RegGenericInfo,Registry entry generic information. Fields: Forensics,Forensics
+MacKnowledgeActivityEnd,An entry from a knowledgeC database indicating the end of some user activity on a MacOs system. Fields: Forensics,"Forensics, Windows"
+MacMRU,"A digital forensics record derived from Apple SharedFileList (.sfl/.sfl2) files. This event helps identify most recently used resources (applications, documents, volumes, etc.). Fields: Forensics",Forensics
+WlanInterfaceInfo,Fields: Forensics,Forensics
+ShimDbTag,A tag entry in the Shim database. Fields: Forensics,"Forensics, Forensics"
+SruNetworkConnectivityUsage,"System Resource Utilization Monitor: connection time per local network interface, application and user tuple. Fields: Forensics",Forensics
+FileExtendedAttrOperation,,macOS
+USNRecord,Fields: Forensics,Forensics
+PeCodePageInfo,A code page that is used to decode code point values within a windows Portable Executable resource. Fields: Forensics,Forensics
+RemoteProcessMemoryRead,,Linux
+XProtectAction,,macOS
+AspmCollectionStatusUpdate,,"Linux, Windows"
+ProcessOpenedFileDescriptor,Fields: Forensics,Forensics
+EddScanStart,Sent by sensor to indicate the start of a new EDD scan run. Note: This event is currently not supported in macOS. Sent by sensor to indicate the start of a new EDD scan run.,"macOS, Windows"
+CreateThreadNoStartImage,"This event is used to indicate the target start address of a CreateThread attempt is not within the limits of a loaded module. This could indicate the presence of shellcode, or other dynamically allocated code regions.",Windows
+CreateThreadReflectiveDll,This event is used to indicate the presence of a reflectively loaded dll in the callstack for a CreateThread attempt.,Windows
+UmppcEntryAnomaly,,Windows
+ScriptControlBlocked,This event is sent when Falcon Host has blocked malicious script content from being executed on the machine. This event provides the details of exactly what content was blocked.,Windows
+ProcessHandleOpDetectInfo,An event that describes the operation on a Process handle that triggered a detection.,Windows
+ReflectiveDllOpenProcess,A userspace thread attempted to open a process which appeared to originate from a reflectively loaded DLL.,Windows
+ScriptControlScanTelemetry,,Windows
+IdpPolicyAccessRuleMatch,,Windows
+CreateThreadKernelNoStartImage,Emitted when a new system thread is created outside of a loaded driver.,Windows
+IdpWatchdogReEnabled,,Windows
+SensorSelfDiagnosticAlert,,"Linux, macOS, Windows"
+ExtendedExploitMitigationViolatedDetectInfo,,Windows
+ProcessState,Running process observed at collection time. Fields: Forensics,Forensics
+FfcBytePatternScanResult,Describes a scanning result performed by the Falcon Forensics Collector. Fields: Forensics,Forensics
+CSAResultsGenericDetectInfo,,Windows
+DataProtectionBrowserConnect,,"Windows, macOS"
+ProcessSubstituteUser,,macOS
+DcUsbDeviceConnected,"An event that describes a connected USB device to which Device Control is attached. It is sent each time the system powers on, the associated hub/port is power cycled, or the device is physically inserted into the system.","Linux, Windows, macOS"
+GcpComputeNetworkInterface,An event that contains GCP (Google Cloud Platform) Compute Network Interface configuration information. Fields: Public Cloud,Public Cloud
+SuspectCreateThreadStack,This event is used to indicate that suspicious data has been discovered in the context of a CreateThread attempt.,Windows
+ErrorEvent,Event indicating a sensor error.,"Linux, Falcon Container, Windows, macOS, Vmcluster, Kubernetes"
+ResourceUtilization,"An event that contains CPU and RAM utilization data for a system. The event is sent when the sensor connects and every 15 minutes thereafter. An event that contains CPU and RAM utilization data for a system. The event is sent when the sensor connects, every 15 minutes thereafter, and in case any change in capacity is detected.","Linux, Falcon Container, macOS, Kubernetes, Windows"
+RecentlyModifiedFileExecutedInContainer,,"Linux, Falcon Container"
+DetectionExcluded,"This event indicates that a detection has been excluded, either by customer exclusions or by CrowdStrike. Fields: Android, iOS","Android, iOS, macOS, Linux, Falcon Container, Windows"
+ZstdFileWritten,,"Linux, macOS, Windows"
+LhaFileWritten,,Windows
+BcmFileWritten,,Windows
+FreeArcFileWritten,,Windows
+Base64PeFileWritten,,Windows
+LRZipFileWritten,,"Linux, macOS, Windows"
+BlakHoleFileWritten,,Windows
+ZpaqFileWritten,,Windows
+BrotliFileWritten,,Windows
+PeaFileWritten,,Windows
+Yz1FileWritten,,Windows
+NetworkSummary,,Windows
+LZipFileWritten,,"macOS, Linux, Windows"
+ProcessEnvironmentEmpty,,Linux
+NetworkStatisticsIP6,Fields: Forensics,"Forensics, macOS"
+LzmaFileWritten,,"Windows, macOS, Linux"
+SyntheticProcessTrace,,Linux
+ShellCommandLineInfo,,Linux
+NetworkStatisticsUDP6,Fields: Forensics,Forensics
+LZOFileWritten,,"Linux, Windows, macOS"
+NetworkStatisticsTCP4,Fields: Forensics,Forensics
+NetworkStatisticsUDP4,Fields: Forensics,Forensics
+NetworkStatisticsIP4,Fields: Forensics,Forensics
+PromiscuousBindIP6,,Windows
+LZ4FileWritten,,"macOS, Windows, Linux"
+MpThreatWMI,Fields: Forensics,Forensics
+NetworkStatisticsTCP6,Fields: Forensics,Forensics
+NetworkIcmpDataIP4,,Linux
+SensorMetadataUpdate,,Linux
+UserExceptionDEP,This event is emitted when a userspace process is detected as having has a DEP or NX-related exception.,Windows
+MpThreatAction,Report when a particular threat action type has occurred. Fields: Forensics,Forensics
+ClassifiedSensitiveFileAccess,,Windows
+PhpEvalString,,Linux
+PhpExecuteScript,,Linux
+PhpBase64Decode,,Linux
+FileDescriptorMonitor,Fields: Forensics,Forensics
+WSLMetadata,,Linux
+BITSJobInfo,Background Intelligent Transfer Service (BITS) job information. Fields: Forensics,Forensics
+MpThreat,Microsoft protection threat. Fields: Forensics,Forensics
+MpThreatDetection,Microsoft protection threat detection. Fields: Forensics,Forensics
+NetworkIcmpDataIP6,,Linux
+MpThreatDetectionWMI,Fields: Forensics,Forensics
+DataProtectionPACDiagnostic,,Windows
+InstallServiceDownloadComplete,An install service download has completed.,Windows
+QuarantineActionResult,This event reports the result of a file quarantine triggered by Falcon Prevent.,"Windows, macOS, Linux, Kubernetes, Vmcluster"
+UpdateManifestDownloadComplete,An update manifest download has completed.,Windows
+NetworkUncontainmentCompleted,This event is sent by the sensor after processing a NetworkUncontainmentRequest event from the cloud. The Status field indicates the success or failure of the uncontainment operation.,"Windows, macOS, Linux, Android, iOS"
+QuarantinedFile,This event is generated when a file is quarantined by Falcon Prevent.,"Windows, macOS, Linux, Kubernetes, Vmcluster"
+InstallBundleDownloadComplete,An install bundle download has completed.,Windows
+NetworkContainmentCompleted,This event is sent by the sensor after processing a NetworkContainmentRequest event from the cloud. The Status field indicates the success or failure of the containment operation.,"Windows, Linux, macOS, iOS, Android"
+SAMHashDumpFromUnsignedModule,This event contains information about an unsigned module that accessed protected SAM account registry keys. It combines relevant information from the RegNtPostOpenKeyEx and SignInfoWithCertAndContext events,Windows
+QuarantinedFileState,This event reports the state of a file quarantined by Falcon Prevent.,"Windows, macOS, Linux, Kubernetes, Vmcluster"
+OsfmDownloadComplete,Sent by LFODownloadActor when new OSFM data is downloaded.,Windows
+InstalledUpdates,"An event that describes the updates installed on the system. The Status field will indicate if some error occurred when attempting to find installed updates. PendingUpdateIds will be an empty string if none are pending. The event is emitted once at startup, and then periodically after that.",Windows
+UserFontLoad,An event that is sent when a user mode program attempts to add a font.,Windows
+NullPageUnmapAttempt,An event that indicates that an attempt was made to unmap the NULL page.,Windows
+UmppaErrorEvent,,Windows
+NullPageProtectionModificationAttempt,An event that indicates that an attempt was made to modify the protection of the NULL page.,Windows
+RansomwareOpenFile,A reified LocalFsPostCreate event so the cloud can route these events for ransomware support.,Windows
+RegNtPostOpenKeyEx,Registry post open key operation event.,Windows
+FsPostCreate,"This event has been deprecated as of Falcon Sensor for Windows 4.16.7903. Older sensors and existing data for these events will still appear, but new sensors utilize the FileCreateInfo event. This event is generated when a file is created by a process.",Windows
+ManifestDownloadComplete,Sent by LFODownloadActor when a new configuration manifest has been downloaded.,"Windows, macOS, Linux, Falcon Container, Kubernetes, Vmcluster"
+ConfigDownloadComplete,Sent by LFODownloadActor when a new binary configuration has been downloaded as part of a configuration update.,"Windows, macOS, Linux, Falcon Container, Kubernetes, Vmcluster"
+FsPostOpen,"This event has been deprecated as of Falcon Sensor for Windows 4.16.7903. Older sensors and existing data for these events will still appear, but new sensors utilize the FileOpenInfo event. This event is generated when a file is opened by a process. This event is only sent to the cloud for processes inside of a detection tree.",Windows
+ModuleDownloadComplete,Sent by LFODownloadActor when a new module has been downloaded as part of a configuration update.,"Windows, macOS, Linux"
+ECBDownloadComplete,Sent by LFODownloadActor when a new ECB module has been downloaded as part of a configuration update.,"Windows, macOS, Linux, Windows"
+RegKeySecurityDecreasedFromUnsignedModule,This event contains information about a protected registry security object whose security was decreased. It combines relevant information from the RegKeySecurityDecreased and SignInfoWithCertAndContext events.,Windows
+ChannelDataDownloadComplete,Sent by LFODownloadActor when a new channel data file has been downloaded.,"Windows, Android, Linux, Falcon Container, macOS, Kubernetes, iOS, Vmcluster"
+FsPostOpenSnapshotFile,Information about a file opened on a snapshot volume.,Windows
+PrivilegedProcessHandle,Indicates a process has opened a handle to a privileged process with special access rights.,Windows
+FsPostOpenUpImpersonating,"A reified FsPostOpen event that occurred in the context of a thread up-impersonating another user, and the context process was not a privileged account.",Windows
+RegNtPostOpenKeyExUpImpersonating,"A reified RegNtPostOpenKeyEx event that occurred in the context of a thread up-impersonating another user, and the context process was not a privileged account.",Windows
+PrivilegedProcessHandleFromUnsignedModule,This event contains information about a privileged process handle created from an unsigned module.,"Windows, Windows"
+ConfigurationLoaded,"Thrown when a new configuration has been successfully loaded but before any Event Sources are started. Fields: Android, iOS","Android, iOS"
+OciImageInfo,An event that contains information about this image used in a container.,"Linux, Falcon Container"
+CsUmProcessCrashSummaryEvent,A event that is emitted when a CrowdStrike process crashes which helps diagnose issues in the field.,Windows
+FirewallRuleApplicationFailed,An event that indicates that the application of a firewall rule has failed. An event that indicates that the application of a firewall rule has failed.,"Windows, macOS, Linux"
+FalconServiceStatus,A message from CsFalconService regarding the service and its servlets' lifecycle events.,"Windows, Windows"
+RemediationActionServiceRemoval,Notification of a service persistence removal remediation action attempted by the sensor.,Windows
+CidMigrationError,,"Windows, Linux, macOS"
+CidMigrationManifestDownloadComplete,,"Windows, macOS, Linux"
+AmsBytePatternScanTelemetry,,Windows
+AmsBytePatternScanResult,,Windows
+RecoveryActionDeleteFilesComplete,,"Windows, Linux, Falcon Container, Kubernetes, macOS"
+RecoveryActionRegistryDeleteValueKeyComplete,,Windows
+RecoveryActionRegistryDeleteKeyComplete,,Windows
+RecoveryActionRegistryDeleteKeyReply,,Windows
+RecoveryActionRegistryCreateKeyComplete,,Windows
+RecoveryActionManipulateModuleTableComplete,,"Linux, Falcon Container, macOS, Windows"
+RecoveryActionKillProcessesComplete,,"Linux, Falcon Container, Kubernetes, Windows, macOS"
+RecoveryActionKillProcessesReply,"Fields: Kubernetes, Windows, macOS, Linux, Falcon Container","Kubernetes, Windows, macOS, Linux, Falcon Container"
+PackageManagerDownloadComplete,"Fields: Vmcluster, macOS, Linux, Falcon Container, Windows, Kubernetes","Vmcluster, macOS, Linux, Falcon Container, Windows, Kubernetes"
+OciContainerPlumbingSummary,,Linux
+EddScanStatus,Sent by sensor periodically to report the status of an on-going scan. Note: This event is currently not supported in macOS. Sent by sensor periodically to report the status of an on-going scan.,"macOS, Windows"
+LFODownloadComplete,,"macOS, Kubernetes, Vmcluster, Android, iOS, Windows, Linux, Falcon Container"
+IdpCloudHealthConfigurationsSetResponse,,Windows
+IdpWatchdogConfigurationsSetResponse,,Windows
+RemediationMonitorKillProcess,Notification of a kill process remediation action that would have been attempted by the sensor but wasn't because the remediation was in monitor mode.,"Linux, macOS, Windows"
+RemediationActionQuarantineMacroFile,,Windows
+KernelCallbackTablePatch,"An event that indicates that the KernelCallbackTable has been altered at the specified index. If present, CallstackModuleNames, Buffer, and MiniContext apply to the thread that modified the index, with Buffer being the bytes at the faulting address. MiniContext, if set, contains Edi, Esi, Ebx, Edx, Ecx, Eax, Ebp for 32-bit processes and Rax, Rcx, Rdx, Rbx, Rbp, Rsi, Rdi, R8-R15 on 64-bit.",Windows
+EarlyExploitPivotDetect,Telemetry event indicating execution pivoting in an unusual way. Could be indicative of malicious code.,Windows
+SuspiciousUserFontLoad,Sent when a UserFontLoad event has been blocked by the sensor.,Windows
+CommsLogReset,Sent by Communications indicating that the CommsLog was flushed due to invalid data,macOS
+RecoveryActionRegistrySetValueKeyReply,,Windows
+RecoveryActionSetRuntimeSystemTagsComplete,,"Windows, macOS, Linux, Falcon Container"
+RecoveryActionSetSystemTagsComplete,"Fields: Kubernetes, Windows, macOS, Linux, Falcon Container","Kubernetes, Windows, macOS, Linux, Falcon Container"
+RecoveryActionGetSystemTagsComplete,"Fields: Kubernetes, macOS, Linux, Falcon Container, Windows","Kubernetes, macOS, Linux, Falcon Container, Windows"
+OpenDirectoryPasswordModification,,macOS
+RecoveryActionDeleteFilesReply,"Fields: Kubernetes, Windows, macOS, Linux, Falcon Container","Kubernetes, Windows, macOS, Linux, Falcon Container"
+RecoveryActionGetModuleTableRecordComplete,,"macOS, Windows, Linux, Falcon Container"
+OciContainerInfo,An event that contains information about this container on creation of the container.,"Linux, Falcon Container"
+HttpVisibilityStatus,An event that indicates that the status of the HTTP Visibility event source has been updated.,Windows
+SSHClientAuthenticated,,Linux
+RecoveryActionGetRuntimeSystemTagsComplete,,"Windows, macOS, Linux, Falcon Container, Windows"
+DriverPreventFailed,Event which indicates we failed (or timed out) attempting to block a driver load.,Windows
+RemediationActionKillProcess,Notification of a kill process remediation action attempted by the sensor.,"Windows, Linux, macOS, Windows Legacy"
+RemediationActionQuarantineFile,Notification of a quarantine file remediation action attempted by the sensor.,Windows
+RemediationMonitorQuarantineFile,Notification of a quarantine file remediation action that would have been attempted by the sensor but wasn't because the remediation was in monitor mode.,Windows
+CreateProcessArgs,Full command line argument corresponding to a process creation.,macOS
+CloudScanControl,A event to that notifies downstream services of completed tasks. Fields: Public Cloud,"Public Cloud, Windows"
+RemediationActionRegistryRemoval,Notification of a registry persistence removal remediation action attempted by the sensor.,Windows
+BlockThreadFailed,A block thread request failed.,Windows
+KillProcessError,"If KillProcessActor fails to kill a process due to process being marked as system critical or for any other reason, this event is emitted.","Linux, Falcon Container, macOS, Windows"
+MacFsEventRecord,"Mac fsevents record, forensically interesting filesystem logging/information. Fields: Forensics",Forensics
+ExcelDocumentOpened,,Windows
+QuarantineXattribute,Fields: Forensics,Forensics
+AppProtocolDetected,,macOS
+RemediationActionQuarantineOfficeMacroFile,,"Windows, Windows"
+OpenDirectoryCreateUser,,macOS
+ZerologonExploitAttempt,,Windows
+PeLanguageId,A language on which a windows Portable Executable resource depends. Fields: Forensics,Forensics
+MsiTransactionExecuted,,Windows
+RecoveryActionRegistryDeleteValueKeyReply,,Windows
+RecoveryActionRegistrySetValueKeyComplete,,Windows
+EtwComponentResponse,Event sent in when EtwComponent has initialized. AttemptNumber is no longer used.,Windows
+SuspendProcessError,This event is emitted if KillProcessActor fails to suspend a process.,"Linux, Falcon Container, Windows, macOS"
+RemediationActionScheduledTaskRemoval,Notification of a scheduled task persistence removal remediation action attempted by the sensor.,Windows
+RecoveryActionRegistryCreateKeyReply,,"Windows, Android, iOS"
