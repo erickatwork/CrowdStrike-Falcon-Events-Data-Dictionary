@@ -7,12 +7,12 @@ Usage:
     uv run app/extract_events.py [PDF_PATH]
     
     If no PDF path is provided, automatically finds the most recent PDF
-    in dated directories (e.g., 10-24-2025/).
+    in ISO-dated directories (e.g., data/2026-06-02/).
 
 Examples:
     uv run app/extract_events.py
     uv run app/extract_events.py path/to/custom.pdf
-    uv run app/extract_events.py 10-24-2025/Events\ Full\ Reference.pdf
+    uv run app/extract_events.py data/2026-06-02/Events\ Full\ Reference.pdf
 
 Requirements:
     - Python 3.10+
@@ -37,132 +37,174 @@ except ImportError:
     sys.exit(1)
 
 
-def extract_event_data(pdf_path):
+# Known sensor platforms. Used to detect when a "Platforms:" value wraps
+# across several lines so the full list is captured.
+PLATFORM_TOKENS = {
+    "Windows",
+    "Windows Legacy",
+    "Linux",
+    "macOS",
+    "iOS",
+    "Android",
+    "ChromeOS",
+    "Falcon Container",
+    "Forensics",
+    "Kubernetes",
+    "Vmcluster",
+    "Public Cloud",
+}
+
+# Lines that are page furniture (running headers/footers) rather than content.
+_NOISE_EXACT = {"Sensor Events", "Field Description", "Copyright © CrowdStrike"}
+_PAGE_FOOTER_RE = re.compile(r"^Page \d+ of \d+$")
+_DATE_RE = re.compile(r"^\d{2}/\d{2}/\d{4}$")
+_TOC_ENTRY_RE = re.compile(r"^(\d+)\.([A-Za-z][A-Za-z0-9]*)$")
+_EVENT_NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
+
+
+def _is_platform_line(line: str) -> bool:
+    """Return True if a line consists solely of known platform tokens."""
+    parts = [p.strip() for p in line.split(",") if p.strip()]
+    return bool(parts) and all(p in PLATFORM_TOKENS for p in parts)
+
+
+def _read_toc(pdf) -> list[str]:
+    """Read the numbered table of contents to get the authoritative event list.
+
+    The reference PDF opens with a numbered index of every event, e.g.
+    ``1.AbnormalTerminationNotification``. We use this both as a whitelist of
+    valid event names and to validate the final extraction count.
     """
-    Extract sensor event headers, descriptions, and platforms from PDF.
-    
-    The expected format in the PDF is:
-        EventName
-        Description
-        Platforms: <platform list>
-        <description text>
-    
+    names: list[str] = []
+    for page in pdf.pages:
+        text = page.extract_text()
+        if not text:
+            continue
+        page_hits = 0
+        for line in text.split("\n"):
+            match = _TOC_ENTRY_RE.match(line.strip())
+            if match:
+                names.append(match.group(2))
+                page_hits += 1
+        # The TOC is contiguous at the front of the document. Once we hit a
+        # content page with no numbered entries (after starting), stop.
+        if names and page_hits == 0:
+            break
+    return names
+
+
+def extract_event_data(pdf_path):
+    """Extract sensor event headers, descriptions, and platforms from the PDF.
+
+    The 2026 reference layout repeats each event title on two consecutive
+    lines, followed by its platforms and an optional description::
+
+        AccessoryDisconnected
+        AccessoryDisconnected
+        Platforms: Android, iOS
+        Sent when a device disconnects from an external accessory...
+        Fields: Android
+        Field Description
+        <field rows>
+
     Args:
         pdf_path: Path to the PDF file
-        
+
     Returns:
-        List of dictionaries containing event data
+        List of dictionaries containing event data (header, description,
+        platforms), in document (alphabetical) order.
     """
-    events = []
-    
     with pdfplumber.open(pdf_path) as pdf:
         total_pages = len(pdf.pages)
         print(f"Processing {total_pages} pages...")
-        
-        current_header = None
-        current_description = []
-        current_platforms = []  # Changed to list to collect multiple platform lines
-        found_description_keyword = False
-        found_platforms = False
-        stop_collecting_description = False  # Stop when we hit field definitions
-        
+
+        toc_names = _read_toc(pdf)
+        toc_set = set(toc_names)
+        if toc_names:
+            print(f"Table of contents lists {len(toc_names)} events.")
+
+        # Flatten the document into a single list of content lines, dropping
+        # page furniture so an event title split across a page break becomes
+        # adjacent again.
+        lines: list[str] = []
         for page_num, page in enumerate(pdf.pages, 1):
-            if page_num % 50 == 0:
-                print(f"Progress: {page_num}/{total_pages} pages processed ({len(events)} events found)...")
-            
+            if page_num % 200 == 0:
+                print(f"Progress: {page_num}/{total_pages} pages read...")
             text = page.extract_text()
             if not text:
                 continue
-            
-            lines = text.split('\n')
-            
-            i = 0
-            while i < len(lines):
-                line = lines[i].strip()
-                i += 1
-                
-                # Skip empty lines
+            for raw in text.split("\n"):
+                line = raw.strip()
                 if not line:
                     continue
-                
-                # Pattern 1: Look ahead to see if next line is "Description"
-                # This means current line is likely a header (new event starting)
-                if i < len(lines) and lines[i].strip() == "Description":
-                    # Save any previous event if it's complete (description can be empty)
-                    if current_header and current_platforms:
-                        description = ' '.join(current_description).strip() if current_description else ''
-                        # Combine multiple platform entries
-                        platforms_str = ', '.join(current_platforms)
-                        events.append({
-                            'header': current_header,
-                            'description': description,
-                            'platforms': platforms_str
-                        })
-                    
-                    # Start new event
-                    current_header = line
-                    current_description = []
-                    current_platforms = []
-                    found_description_keyword = False
-                    found_platforms = False
-                    stop_collecting_description = False
+                if line in _NOISE_EXACT or _PAGE_FOOTER_RE.match(line) or _DATE_RE.match(line):
                     continue
-                
-                # Pattern 2: Look for "Description" keyword
-                if line == "Description":
-                    found_description_keyword = True
+                if _TOC_ENTRY_RE.match(line):
                     continue
-                
-                # Pattern 3: Look for "Platforms:" line (comes after Description)
-                # Can have multiple platform lines, collect them all
-                platform_match = re.match(r'^Platforms?:\s*(.+)$', line, re.IGNORECASE)
-                if platform_match and found_description_keyword:
-                    platform_value = platform_match.group(1).strip()
-                    current_platforms.append(platform_value)
-                    found_platforms = True
-                    continue
-                
-                # Pattern 4: Collect description text (comes after Platforms line)
-                if found_platforms and current_platforms:
-                    # Stop collecting if we hit field definitions or other structured content
-                    # Common patterns that indicate end of description:
-                    # - "Fields:" followed by platform names (e.g., "Fields: Windows, macOS")
-                    # - "Field Description" (table header)
-                    # - "top [#top]" (end marker)
-                    # - CamelCase field names (e.g., "AttemptedActionCount")
-                    # - Common field table keywords
-                    if (re.match(r'^Fields?:\s+(Windows|macOS|Linux|iOS)', line, re.IGNORECASE) or
-                        line.startswith('Field Description') or
-                        line.startswith('top [#top]') or
-                        line == 'Field' or
-                        re.match(r'^(Windows|macOS|Linux|iOS)\s+Field\s+Description', line) or
-                        # Detect CamelCase field names (starts with uppercase, has mix of upper/lower, no spaces)
-                        # This catches field names like "AttemptedActionCount", "SuccessfulActionCount"
-                        (re.match(r'^[A-Z][a-z]+[A-Z][a-zA-Z]*$', line) and 
-                         line not in ['Windows', 'Linux', 'macOS', 'iOS']) or
-                        # Common field table keywords that appear alone on a line
-                        line in ['Values:', 'Value']):
-                        # This marks the start of field definitions, stop collecting description
-                        stop_collecting_description = True
-                        continue
-                    
-                    # Keep collecting description only if we haven't hit field definitions yet
-                    if not stop_collecting_description:
-                        current_description.append(line)
-                    continue
-        
-        # Don't forget the last event (description can be empty)
-        if current_header and current_platforms:
-            description = ' '.join(current_description).strip() if current_description else ''
-            # Combine multiple platform entries
-            platforms_str = ', '.join(current_platforms)
-            events.append({
-                'header': current_header,
-                'description': description,
-                'platforms': platforms_str
-            })
-    
+                lines.append(line)
+
+    events = []
+    seen = set()
+    n = len(lines)
+    i = 0
+    while i < n - 2:
+        header = lines[i]
+        # An event starts where its title appears twice in a row and is
+        # immediately followed by a "Platforms:" line.
+        is_header = (
+            _EVENT_NAME_RE.match(header)
+            and lines[i + 1] == header
+            and lines[i + 2].startswith("Platforms:")
+            and (not toc_set or header in toc_set)
+        )
+        if not is_header or header in seen:
+            i += 1
+            continue
+
+        seen.add(header)
+
+        # Capture platforms, allowing the list to wrap onto following lines.
+        platforms = lines[i + 2][len("Platforms:"):].strip()
+        j = i + 3
+        while j < n and _is_platform_line(lines[j]) and not lines[j].startswith("Fields:"):
+            platforms += ", " + lines[j]
+            j += 1
+
+        # Capture the optional free-text description until the field tables
+        # begin ("Fields:") or the next event starts.
+        description_parts = []
+        while j < n:
+            line = lines[j]
+            if line.startswith("Fields:"):
+                break
+            # Next event header reached without a Fields section.
+            if (
+                line in toc_set
+                and j + 1 < n
+                and lines[j + 1] == line
+                and j + 2 < n
+                and lines[j + 2].startswith("Platforms:")
+            ):
+                break
+            description_parts.append(line)
+            j += 1
+
+        events.append({
+            "header": header,
+            "description": " ".join(description_parts).strip(),
+            "platforms": platforms,
+        })
+        i = j
+
     print(f"\n✓ Extracted {len(events)} sensor events")
+    if toc_names:
+        missing = [name for name in toc_names if name not in seen]
+        if missing:
+            preview = ", ".join(missing[:10])
+            more = "" if len(missing) <= 10 else f" (+{len(missing) - 10} more)"
+            print(f"⚠️  {len(missing)} TOC events not matched: {preview}{more}")
+        else:
+            print("✓ All table-of-contents events were extracted.")
     return events
 
 
@@ -217,38 +259,46 @@ def save_to_markdown(events, output_path):
 
 def find_most_recent_pdf(workspace_root: Path) -> Path | None:
     """
-    Find the most recent PDF in dated directories.
-    
-    Looks for directories matching date patterns (MM-DD-YYYY) and finds
-    PDFs named "Events Full Reference.pdf" within them.
-    
+    Find the most recent PDF in ISO-dated directories.
+
+    Looks for directories named in ISO 8601 date format (YYYY-MM-DD) and
+    finds PDFs named "Events Full Reference.pdf" within them. Both the
+    ``data/`` subdirectory and the workspace root are searched, so datasets
+    can live under ``data/2026-06-02/`` (preferred) or directly at the root.
+
     Args:
         workspace_root: Root directory to search in
-        
+
     Returns:
         Path to most recent PDF, or None if not found
     """
-    date_pattern = re.compile(r'^\d{2}-\d{2}-\d{4}$')
-    
-    # Find all date-formatted directories
-    date_dirs = [
-        d for d in workspace_root.iterdir()
-        if d.is_dir() and date_pattern.match(d.name)
-    ]
-    
+    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+
+    # Search the dedicated data/ directory first, then the workspace root.
+    search_roots = [workspace_root / "data", workspace_root]
+
+    date_dirs = []
+    for root in search_roots:
+        if not root.is_dir():
+            continue
+        date_dirs.extend(
+            d for d in root.iterdir()
+            if d.is_dir() and date_pattern.match(d.name)
+        )
+
     if not date_dirs:
         return None
-    
-    # Sort by directory name (which is date) in reverse (most recent first)
-    # Format MM-DD-YYYY sorts correctly when comparing strings
-    date_dirs.sort(reverse=True)
-    
-    # Look for PDF in the most recent directory first
+
+    # Sort by directory name (the ISO date) in reverse (most recent first).
+    # ISO 8601 dates sort chronologically as plain strings.
+    date_dirs.sort(key=lambda d: d.name, reverse=True)
+
+    # Look for the PDF in the most recent directory first.
     for date_dir in date_dirs:
         pdf_path = date_dir / "Events Full Reference.pdf"
         if pdf_path.exists():
             return pdf_path
-    
+
     return None
 
 
@@ -260,7 +310,7 @@ def parse_arguments():
         epilog="""
 Examples:
   %(prog)s                                    # Auto-detect most recent PDF
-  %(prog)s 11-04-2025/Events\ Full\ Reference.pdf
+  %(prog)s data/2026-06-02/Events\ Full\ Reference.pdf
   %(prog)s /path/to/custom.pdf
         """
     )
@@ -299,7 +349,7 @@ def main():
             print("❌ Error: No PDF found in dated directories.")
             print("\nPlease either:")
             print("  1. Specify a PDF path: uv run app/extract_events.py path/to/pdf")
-            print("  2. Place PDF in a dated directory (e.g., 11-04-2025/Events Full Reference.pdf)")
+            print("  2. Place PDF in a dated directory (e.g., data/2026-06-02/Events Full Reference.pdf)")
             return 1
         
         print(f"✓ Found PDF: {pdf_path.relative_to(workspace_root)}\n")

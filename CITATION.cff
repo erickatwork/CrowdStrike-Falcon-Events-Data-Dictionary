@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: CrowdStrike Falcon Events Data Dictionary
+message: >-
+  If you use this dataset or tooling, please cite this repository.
+type: dataset
+abstract: >-
+  An open, machine-readable reference of CrowdStrike Falcon sensor events,
+  exported from the official documentation into CSV and Markdown for threat
+  hunting, detection engineering, SIEM onboarding, and AI/LLM ingestion.
+authors:
+  - alias: erickatwork
+repository-code: >-
+  https://github.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary
+license: Apache-2.0
+keywords:
+  - crowdstrike
+  - falcon
+  - sensor events
+  - data dictionary
+  - EDR
+  - threat hunting
+  - detection engineering
+  - SIEM
+  - security

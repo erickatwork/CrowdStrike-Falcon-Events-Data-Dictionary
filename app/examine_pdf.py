@@ -136,34 +136,41 @@ def search_for_pattern(pdf_path, pattern, max_results=10):
 
 def find_most_recent_pdf(workspace_root: Path) -> Path | None:
     """
-    Find the most recent PDF in dated directories.
-    
+    Find the most recent PDF in ISO-dated directories.
+
+    Searches the ``data/`` subdirectory first, then the workspace root, for
+    directories named in ISO 8601 date format (YYYY-MM-DD).
+
     Args:
         workspace_root: Root directory to search in
-        
+
     Returns:
         Path to most recent PDF, or None if not found
     """
-    date_pattern = re.compile(r'^\d{2}-\d{2}-\d{4}$')
-    
-    # Find all date-formatted directories
-    date_dirs = [
-        d for d in workspace_root.iterdir()
-        if d.is_dir() and date_pattern.match(d.name)
-    ]
-    
+    date_pattern = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+
+    search_roots = [workspace_root / "data", workspace_root]
+
+    date_dirs = []
+    for root in search_roots:
+        if not root.is_dir():
+            continue
+        date_dirs.extend(
+            d for d in root.iterdir()
+            if d.is_dir() and date_pattern.match(d.name)
+        )
+
     if not date_dirs:
         return None
-    
-    # Sort by directory name (most recent first)
-    date_dirs.sort(reverse=True)
-    
-    # Look for PDF in the most recent directory
+
+    # ISO 8601 dates sort chronologically as plain strings.
+    date_dirs.sort(key=lambda d: d.name, reverse=True)
+
     for date_dir in date_dirs:
         pdf_path = date_dir / "Events Full Reference.pdf"
         if pdf_path.exists():
             return pdf_path
-    
+
     return None
 
 
@@ -234,7 +241,7 @@ def main():
             print("❌ Error: No PDF found in dated directories.")
             print("\nPlease either:")
             print("  1. Specify a PDF path: uv run app/examine_pdf.py path/to/pdf")
-            print("  2. Place PDF in a dated directory (e.g., 11-04-2025/Events Full Reference.pdf)")
+            print("  2. Place PDF in a dated directory (e.g., data/2026-06-02/Events Full Reference.pdf)")
             return
         
         print(f"✓ Found PDF: {pdf_path.relative_to(workspace_root)}\n")
