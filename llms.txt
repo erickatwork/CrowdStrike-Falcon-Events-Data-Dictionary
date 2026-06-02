@@ -1,0 +1,36 @@
+# CrowdStrike Falcon Events Data Dictionary
+
+> Open, machine-readable reference of CrowdStrike Falcon sensor events, exported
+> from the official (auth-gated, 1,500+ page) PDF into clean CSV and Markdown.
+> Designed for threat hunting, detection engineering, SIEM onboarding, and
+> AI/LLM retrieval (RAG). The current snapshot documents 998 events across
+> Windows, Linux, macOS, iOS, Android, ChromeOS, Falcon Container, Kubernetes,
+> Public Cloud, and Forensics platforms.
+
+Each record contains: the event name (header), a human-readable description,
+and the list of supported platforms. Snapshots are stored in ISO-dated folders
+so the schema can be diffed across releases.
+
+## Data (latest: 2026-06-02)
+
+- [Sensor events (Markdown)](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.md): All 998 events with descriptions and platforms; best for LLM context windows and RAG.
+- [Sensor events (CSV)](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.csv): Columns header,description,platforms; best for dataframes, SQL, and embeddings.
+
+## Previous snapshots
+
+- [2025-10-24 (CSV)](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2025-10-24/sensor_events.csv): Earlier export for diffing schema changes over time.
+
+## Tools
+
+- [extract_events.py](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/app/extract_events.py): Converts the reference PDF into CSV and Markdown.
+- [examine_pdf.py](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/app/examine_pdf.py): Inspects and searches the raw PDF.
+
+## Source
+
+- [Official CrowdStrike sensor events documentation](https://docs.crowdstrike.com/r/en-US/sensormap.ftmap): Authoritative source; treat as source of truth.
+
+## Notes
+
+- Unofficial, community-maintained project. Not affiliated with or endorsed by CrowdStrike, Inc.
+- "CrowdStrike" and "Falcon" are trademarks of CrowdStrike, Inc.
+- Code is Apache-2.0 licensed; event definitions remain the property of CrowdStrike.

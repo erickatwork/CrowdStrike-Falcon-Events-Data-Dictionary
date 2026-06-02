@@ -1,115 +1,159 @@
-# CrowdStrike-Falcon-Events-Data-Dictionary
+# CrowdStrike Falcon Events Data Dictionary
 
-This repository contains CrowdStrike Falcon Events documentation and tools to extract sensor event data from PDF documentation.
+> An open, searchable, machine-readable reference of **CrowdStrike Falcon sensor events** — exported to **CSV** and **Markdown** for threat hunting, detection engineering, SIEM onboarding, and **AI/LLM ingestion**.
 
-The data dictionary is available at: https://falcon.crowdstrike.com/documentation/page/e3ce0b24/events-data-dictionary
+[![License: Apache 2.0](https://img.shields.io/github/license/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary)](LICENSE)
+[![Events documented](https://img.shields.io/badge/events-998-blue)](data/2026-06-02/sensor_events.md)
+[![Data updated](https://img.shields.io/badge/data-2026--06--02-success)](data/2026-06-02/)
+[![Last commit](https://img.shields.io/github/last-commit/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary)](https://github.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/commits/main)
+[![Stars](https://img.shields.io/github/stars/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary?style=social)](https://github.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/stargazers)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 
-I'm sharing it here as it's behind auth, and I wanted to share it with the community. The document is also huge so its very hard to navigate. I created this tool to help me extract the primary info I needed.
+The official CrowdStrike Falcon **Events Data Dictionary** is enormous (1,500+ pages) and lives behind authentication, which makes it hard to search, diff, or feed into tooling. This repository turns that PDF into **clean, versioned, plain-text data** that you can grep, query, diff across releases, and load directly into an LLM or a SIEM.
 
-## 📁 Contents
+**Latest snapshot:** [`data/2026-06-02/`](data/2026-06-02/) — **998 sensor events** across Windows, Linux, macOS, iOS, Android, ChromeOS, Falcon Container, Kubernetes, Public Cloud, and Forensics.
 
-- **PDF Documentation**: CrowdStrike Falcon Events Full Reference documentation
-- **Extraction Tools**: Python scripts to extract sensor events data from the PDF
-- **Output Formats**: CSV and Markdown exports of sensor event information
+- Source documentation: <https://docs.crowdstrike.com/r/en-US/sensormap.ftmap>
+- Falcon console (auth required): <https://falcon.crowdstrike.com/documentation/page/e3ce0b24/events-data-dictionary>
 
-## 🚀 Quick Start
+---
 
-Extract all sensor events from the PDF documentation:
+## 🤖 Use it with AI / LLMs (RAG, agents, chatbots)
 
-```bash
-# 1. Install uv (if not already installed)
-# See https://docs.astral.sh/uv/getting-started/installation/
-curl -LsSf https://astral.sh/uv/install.sh | sh  # macOS/Linux
-# or use pip: pip install uv
+These exports are designed to be dropped straight into a prompt, a vector store, or a retrieval pipeline. They are plain UTF-8, ~300&nbsp;KB, and contain one row/section per event with its description and supported platforms.
 
-# 2. Place your PDF in a dated directory (e.g., 11-04-2025/Events Full Reference.pdf)
+**Stable raw URLs (no auth needed):**
 
-# 3. Run extraction (auto-detects most recent PDF)
-uv run app/extract_events.py
+```text
+# Markdown (best for RAG / LLM context windows)
+https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.md
 
-# Or specify a custom PDF path:
-uv run app/extract_events.py path/to/custom.pdf
+# CSV (best for dataframes, embeddings, SQL)
+https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.csv
+
+# Machine-readable index for AI agents
+https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/llms.txt
 ```
 
-This will generate (in the same directory as the PDF):
-- `sensor_events.csv` - All events in CSV format
-- `sensor_events.md` - All events in Markdown format with table of contents
+**Quick start for an LLM pipeline:**
 
-## 🛠 Tools Included
+```python
+import pandas as pd
 
-### extract_events.py
-Main extraction script that reads the PDF and extracts:
-- Event headers/names
-- Event descriptions
-- Supported platforms
+URL = ("https://raw.githubusercontent.com/erickatwork/"
+       "CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.csv")
+events = pd.read_csv(URL)
 
-**Features:**
-- Auto-detects most recent PDF in dated directories
-- Accepts custom PDF paths
-- Outputs to same directory as PDF by default
-- Optional custom output directory
+# Build documents for a vector store / RAG index
+docs = [
+    f"{row.header}: {row.description} (Platforms: {row.platforms})"
+    for row in events.itertuples()
+]
+print(len(docs), "Falcon event documents ready for embedding")
+```
 
-**Usage:**
+See [`llms.txt`](llms.txt) for an AI-agent-friendly map of this repository.
+
+---
+
+## 📁 What's inside
+
+```
+data/
+  2026-06-02/                  # versioned snapshot (ISO date)
+    Events Full Reference.pdf  # original CrowdStrike export
+    sensor_events.csv          # 998 events: header, description, platforms
+    sensor_events.md           # same data + table of contents + summary table
+  2025-10-24/                  # previous snapshot (for diffing changes over time)
+app/
+  extract_events.py            # PDF -> CSV + Markdown extractor
+  examine_pdf.py               # inspect / search the raw PDF
+```
+
+Each snapshot is kept in its own ISO-dated directory so you can **diff the schema between releases** and track when events are added, removed, or change platform support.
+
+## 🔎 Data format
+
+### CSV
+
+```csv
+header,description,platforms
+AccessoryDisconnected,"Sent when a device disconnects from an external accessory...","Android, iOS"
+ActiveDirectoryAccountDisabled,"Indicates the subject account has been disabled.",Windows
+```
+
+### Markdown
+
+- Linked table of contents for all 998 events
+- A summary table (event, description, platforms)
+- A detailed section per event
+
+## 🚀 Re-generate the data yourself
+
 ```bash
-# Auto-detect most recent PDF
+# 1. Install uv (https://docs.astral.sh/uv/getting-started/installation/)
+curl -LsSf https://astral.sh/uv/install.sh | sh   # macOS/Linux
+
+# 2. Drop a new export into a dated folder, e.g.
+#    data/2026-06-02/Events Full Reference.pdf
+#    (Export from https://docs.crowdstrike.com/r/en-US/sensormap.ftmap)
+
+# 3. Extract (auto-detects the most recent dated folder under data/)
 uv run app/extract_events.py
+```
 
-# Use specific PDF
-uv run app/extract_events.py 11-04-2025/Events\ Full\ Reference.pdf
+Outputs `sensor_events.csv` and `sensor_events.md` next to the PDF.
 
-# Custom output directory
+```bash
+# Point at a specific PDF
+uv run app/extract_events.py "data/2026-06-02/Events Full Reference.pdf"
+
+# Write outputs elsewhere
 uv run app/extract_events.py -o output/
 ```
 
-### examine_pdf.py
-Helper script to examine PDF structure and search for patterns.
+### Inspect the PDF
 
-**Usage:**
 ```bash
-# View first 3 pages (auto-detects PDF)
-uv run app/examine_pdf.py
-
-# View specific pages
-uv run app/examine_pdf.py -p 10 -n 5  # Pages 10-14
-
-# Search for patterns
-uv run app/examine_pdf.py --search "EventName"
-
-# Use custom PDF
-uv run app/examine_pdf.py custom.pdf -p 100 -n 1
+uv run app/examine_pdf.py                  # first pages of newest PDF
+uv run app/examine_pdf.py -p 30 -n 5       # pages 30-34
+uv run app/examine_pdf.py --search DnsRequest
 ```
-
-## 📊 Output Format
-
-### CSV Output
-```csv
-header,description,platforms
-HookedDriverObject,"This event tracks...",Windows
-AnotherEvent,"Description here","Windows, Mac, Linux"
-```
-
-### Markdown Output
-- Table of contents with links to each event
-- Summary table
-- Detailed sections for each event
 
 ## 🔧 Requirements
 
 - Python 3.10+
-- uv (Python package manager)
-- pdfplumber (automatically installed via uv)
+- [uv](https://docs.astral.sh/uv/) (Python package manager)
+- `pdfplumber` (installed automatically via `uv sync`)
 
-## 📝 License
+## 🧭 How the extractor works
 
-See [LICENSE](LICENSE) file for details.
+The reference PDF prints each event with its title repeated on two lines, followed by `Platforms:`, an optional description, then per-platform `Fields:` tables:
+
+```
+AccessoryDisconnected
+AccessoryDisconnected
+Platforms: Android, iOS
+Sent when a device disconnects from an external accessory...
+Fields: Android
+Field Description
+...
+```
+
+`extract_events.py` flattens the document (stripping running headers/footers), reads the numbered table of contents as an authoritative whitelist, and emits one record per event. The run is validated against the table of contents so you can see if any event was missed.
+
+## 🗂 Keywords
+
+CrowdStrike Falcon, Falcon sensor events, CrowdStrike events data dictionary, Falcon Data Replicator (FDR), CrowdStrike event schema, EDR telemetry, endpoint detection and response, threat hunting, detection engineering, SIEM onboarding, Splunk, CrowdStrike Query Language (CQL), Falcon LogScale / Humio, security data dictionary, ProcessRollup2, DnsRequest, NetworkConnectIP4, incident response, blue team, SOC.
+
+## ⚖️ Disclaimer
+
+This is an **unofficial, community-maintained** project and is **not affiliated with, endorsed by, or sponsored by CrowdStrike**. "CrowdStrike" and "Falcon" are trademarks of CrowdStrike, Inc. The event definitions are the property of CrowdStrike and are shared here for reference and interoperability. If you are a CrowdStrike customer, always treat the [official documentation](https://docs.crowdstrike.com/r/en-US/sensormap.ftmap) as the source of truth.
 
 ## 🤝 Contributing
 
-Contributions welcome! Please feel free to submit a Pull Request.
+Contributions are welcome — especially **new dated snapshots** when CrowdStrike updates the dictionary, parser improvements, and tooling for diffing releases. Please open an issue or pull request.
 
-## 📚 Resources
+## 📝 License
 
-- [CrowdStrike Falcon Documentation](https://www.crowdstrike.com/)
-- [Official Events Data Dictionary](https://falcon.crowdstrike.com/documentation/page/e3ce0b24/events-data-dictionary) (requires authentication)
-- Latest Events Reference PDF in `10-24-2025/` directory
-- [uv Documentation](https://docs.astral.sh/uv/)
+Released under the [Apache License 2.0](LICENSE). The underlying event definitions remain the property of CrowdStrike, Inc.
