@@ -23,6 +23,7 @@ Requirements:
 import argparse
 import csv
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -257,6 +258,142 @@ def save_to_markdown(events, output_path):
     print(f"✓ Markdown saved to: {output_path}")
 
 
+_ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def iso_date_dirs(workspace_root: Path) -> list[Path]:
+    """Return ISO-dated snapshot directories under ``data/``, newest first."""
+    data_dir = workspace_root / "data"
+    if not data_dir.is_dir():
+        return []
+    dirs = [
+        d for d in data_dir.iterdir()
+        if d.is_dir() and _ISO_DATE_RE.match(d.name)
+    ]
+    # ISO 8601 dates sort chronologically as plain strings.
+    dirs.sort(key=lambda d: d.name, reverse=True)
+    return dirs
+
+
+def update_current_snapshot(workspace_root: Path, csv_path: Path,
+                            md_path: Path, date_str: str) -> None:
+    """Mirror the newest snapshot into ``data/current/`` for stable raw URLs.
+
+    External consumers (RAG pipelines, SIEMs) can point at ``data/current/``
+    and always get the latest export without the URL changing each release.
+    """
+    current = workspace_root / "data" / "current"
+    current.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(csv_path, current / "sensor_events.csv")
+    shutil.copyfile(md_path, current / "sensor_events.md")
+    (current / "SOURCE.md").write_text(
+        "# data/current\n\n"
+        "This folder is **auto-generated** by `app/extract_events.py`. It always\n"
+        "mirrors the newest dated snapshot so external tools can rely on stable,\n"
+        "unchanging raw URLs.\n\n"
+        f"- Mirrors: [`data/{date_str}/`](../{date_str}/)\n"
+        "- Regenerated whenever the newest snapshot is (re-)extracted.\n\n"
+        "**Do not edit these files by hand.** If you need a fixed version, link to\n"
+        "the dated folder instead of this one.\n",
+        encoding="utf-8",
+    )
+    print(f"✓ data/current/ synced from {date_str}")
+
+
+def _shields_escape(text: str) -> str:
+    """Escape a string for a shields.io badge (single dashes are separators)."""
+    return text.replace("-", "--")
+
+
+def _replace_marked_block(text: str, name: str, transform) -> tuple[str, int]:
+    """Apply ``transform`` to the content between ``<!-- NAME:START ... -->`` and
+    ``<!-- NAME:END -->`` markers, leaving the markers themselves intact."""
+    pattern = re.compile(
+        rf"(<!--\s*{name}:START.*?-->)(.*?)(<!--\s*{name}:END\s*-->)",
+        re.DOTALL,
+    )
+    return pattern.subn(
+        lambda m: m.group(1) + transform(m.group(2)) + m.group(3),
+        text,
+    )
+
+
+def update_readme(readme_path: Path, date_str: str, count: int) -> None:
+    """Refresh the auto-updated badge/snapshot regions of the README in place."""
+    if not readme_path.exists():
+        return
+    text = original = readme_path.read_text(encoding="utf-8")
+
+    def _badges(block: str) -> str:
+        block = re.sub(r"events-\d[\d,]*-", f"events-{count}-", block)
+        block = re.sub(
+            r"data-\d{4}--\d{2}--\d{2}-",
+            f"data-{_shields_escape(date_str)}-",
+            block,
+        )
+        return block
+
+    def _latest(block: str) -> str:
+        block = re.sub(r"data/\d{4}-\d{2}-\d{2}", f"data/{date_str}", block)
+        block = re.sub(
+            r"\d[\d,]* sensor events", f"{count} sensor events", block
+        )
+        return block
+
+    text, nb = _replace_marked_block(text, "BADGES", _badges)
+    text, nl = _replace_marked_block(text, "LATEST", _latest)
+
+    if text != original:
+        readme_path.write_text(text, encoding="utf-8")
+        print(f"✓ README.md refreshed → {date_str}, {count} events")
+    else:
+        print("• README.md already current.")
+
+
+def update_llms(llms_path: Path, date_str: str, count: int) -> None:
+    """Refresh the dated/count references in ``llms.txt`` in place."""
+    if not llms_path.exists():
+        return
+    text = original = llms_path.read_text(encoding="utf-8")
+    text = re.sub(r"latest:\s*\d{4}-\d{2}-\d{2}", f"latest: {date_str}", text)
+    text = re.sub(r"documents \d[\d,]* events", f"documents {count} events", text)
+    text = re.sub(r"All \d[\d,]* events", f"All {count} events", text)
+    if text != original:
+        llms_path.write_text(text, encoding="utf-8")
+        print(f"✓ llms.txt refreshed → {date_str}, {count} events")
+    else:
+        print("• llms.txt already current.")
+
+
+def update_skill(skill_path: Path, count: int) -> None:
+    """Refresh the event count referenced in the Claude Skill markdown."""
+    if not skill_path.exists():
+        return
+    text = original = skill_path.read_text(encoding="utf-8")
+    text = re.sub(r"dictionary of \d[\d,]* events",
+                  f"dictionary of {count} events", text)
+    text = re.sub(r"\d[\d,]* CrowdStrike Falcon sensor events",
+                  f"{count} CrowdStrike Falcon sensor events", text)
+    if text != original:
+        skill_path.write_text(text, encoding="utf-8")
+        print(f"✓ SKILL.md refreshed → {count} events")
+    else:
+        print("• SKILL.md already current.")
+
+
+def update_prompt(prompt_path: Path, count: int) -> None:
+    """Refresh the event count referenced in the copy-paste system prompt."""
+    if not prompt_path.exists():
+        return
+    text = original = prompt_path.read_text(encoding="utf-8")
+    text = re.sub(r"export of \d[\d,]* events", f"export of {count} events", text)
+    if text != original:
+        prompt_path.write_text(text, encoding="utf-8")
+        print(f"✓ system-prompt.md refreshed → {count} events")
+    else:
+        print("• system-prompt.md already current.")
+
+
 def find_most_recent_pdf(workspace_root: Path) -> Path | None:
     """
     Find the most recent PDF in ISO-dated directories.
@@ -394,7 +531,33 @@ def main():
     except Exception as e:
         print(f"❌ Error saving Markdown: {e}")
         return 1
-    
+
+    # Keep data/current/ and the docs in sync — but only when we just generated
+    # the newest dated snapshot, so re-running an old export can't clobber the
+    # "current" pointer (or the README) with stale data.
+    snapshot_date = None
+    if _ISO_DATE_RE.match(output_dir.name):
+        date_dirs = iso_date_dirs(workspace_root)
+        if date_dirs and output_dir.resolve() == date_dirs[0].resolve():
+            snapshot_date = output_dir.name
+
+    if snapshot_date:
+        try:
+            update_current_snapshot(workspace_root, csv_output, md_output, snapshot_date)
+            update_readme(workspace_root / "README.md", snapshot_date, len(events))
+            update_llms(workspace_root / "llms.txt", snapshot_date, len(events))
+            update_skill(
+                workspace_root / "skills" / "crowdstrike-falcon-events" / "SKILL.md",
+                len(events),
+            )
+            update_prompt(
+                workspace_root / "prompts" / "system-prompt.md", len(events)
+            )
+        except Exception as e:
+            print(f"⚠️  Could not refresh data/current/ or docs: {e}")
+    else:
+        print("• Skipped data/current/ + docs refresh (not the newest dated snapshot).")
+
     print("\n" + "="*60)
     print("✅ Extraction complete!")
     print("="*60)

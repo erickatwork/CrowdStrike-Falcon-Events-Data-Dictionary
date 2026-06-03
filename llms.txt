@@ -13,8 +13,10 @@ so the schema can be diffed across releases.
 
 ## Data (latest: 2026-06-02)
 
-- [Sensor events (Markdown)](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.md): All 998 events with descriptions and platforms; best for LLM context windows and RAG.
-- [Sensor events (CSV)](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.csv): Columns header,description,platforms; best for dataframes, SQL, and embeddings.
+`data/current/` always mirrors the newest snapshot, so these raw URLs are stable across releases.
+
+- [Sensor events (Markdown)](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/current/sensor_events.md): All 998 events with descriptions and platforms; best for LLM context windows and RAG.
+- [Sensor events (CSV)](https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/current/sensor_events.csv): Columns header,description,platforms; best for dataframes, SQL, and embeddings.
 
 ## Previous snapshots
 
