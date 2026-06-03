@@ -13,8 +13,7 @@ The official CrowdStrike Falcon **Events Data Dictionary** is enormous (1,500+ p
 
 **Latest snapshot:** [`data/2026-06-02/`](data/2026-06-02/) — **998 sensor events** across Windows, Linux, macOS, iOS, Android, ChromeOS, Falcon Container, Kubernetes, Public Cloud, and Forensics.
 
-- Source documentation: <https://docs.crowdstrike.com/r/en-US/sensormap.ftmap>
-- Falcon console (auth required): <https://falcon.crowdstrike.com/documentation/page/e3ce0b24/events-data-dictionary>
+- Source documentation (auth required): <https://docs.crowdstrike.com/r/en-US/sensormap.ftmap>
 
 ---
 
@@ -94,9 +93,9 @@ ActiveDirectoryAccountDisabled,"Indicates the subject account has been disabled.
 # 1. Install uv (https://docs.astral.sh/uv/getting-started/installation/)
 curl -LsSf https://astral.sh/uv/install.sh | sh   # macOS/Linux
 
-# 2. Drop a new export into a dated folder, e.g.
-#    data/2026-06-02/Events Full Reference.pdf
-#    (Export from https://docs.crowdstrike.com/r/en-US/sensormap.ftmap)
+# 2. Get the PDF: visit the source documentation (auth required) at
+#    https://docs.crowdstrike.com/r/en-US/sensormap.ftmap and export it as a PDF.
+#    Drop it into a dated folder, e.g. data/2026-06-02/Events Full Reference.pdf
 
 # 3. Extract (auto-detects the most recent dated folder under data/)
 uv run app/extract_events.py
