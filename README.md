@@ -3,15 +3,21 @@
 > An open, searchable, machine-readable reference of **CrowdStrike Falcon sensor events** — exported to **CSV** and **Markdown** for threat hunting, detection engineering, SIEM onboarding, and **AI/LLM ingestion**.
 
 [![License: Apache 2.0](https://img.shields.io/github/license/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary)](LICENSE)
-[![Events documented](https://img.shields.io/badge/events-998-blue)](data/2026-06-02/sensor_events.md)
-[![Data updated](https://img.shields.io/badge/data-2026--06--02-success)](data/2026-06-02/)
+<!-- BADGES:START (auto-updated by app/extract_events.py — do not edit between these markers) -->
+[![Events documented](https://img.shields.io/badge/events-998-blue)](data/current/sensor_events.md)
+[![Data updated](https://img.shields.io/badge/data-2026--06--02-success)](data/current/)
+<!-- BADGES:END -->
 [![Last commit](https://img.shields.io/github/last-commit/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary)](https://github.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/commits/main)
 [![Stars](https://img.shields.io/github/stars/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary?style=social)](https://github.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/stargazers)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
 
 The official CrowdStrike Falcon **Events Data Dictionary** is enormous (1,500+ pages) and lives behind authentication, which makes it hard to search, diff, or feed into tooling. This repository turns that PDF into **clean, versioned, plain-text data** that you can grep, query, diff across releases, and load directly into an LLM or a SIEM.
 
+<!-- LATEST:START (auto-updated by app/extract_events.py — do not edit between these markers) -->
 **Latest snapshot:** [`data/2026-06-02/`](data/2026-06-02/) — **998 sensor events** across Windows, Linux, macOS, iOS, Android, ChromeOS, Falcon Container, Kubernetes, Public Cloud, and Forensics.
+<!-- LATEST:END -->
+
+Need a link that never goes stale? [`data/current/`](data/current/) always mirrors the newest snapshot.
 
 - Source documentation (auth required): <https://docs.crowdstrike.com/r/en-US/sensormap.ftmap>
 
@@ -23,12 +29,14 @@ These exports are designed to be dropped straight into a prompt, a vector store,
 
 **Stable raw URLs (no auth needed):**
 
+`data/current/` always mirrors the newest snapshot, so these URLs never change between releases. Pin to a dated folder (e.g. `data/2026-06-02/`) instead if you need a fixed version.
+
 ```text
 # Markdown (best for RAG / LLM context windows)
-https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.md
+https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/current/sensor_events.md
 
 # CSV (best for dataframes, embeddings, SQL)
-https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.csv
+https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/data/current/sensor_events.csv
 
 # Machine-readable index for AI agents
 https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dictionary/main/llms.txt
@@ -40,7 +48,7 @@ https://raw.githubusercontent.com/erickatwork/CrowdStrike-Falcon-Events-Data-Dic
 import pandas as pd
 
 URL = ("https://raw.githubusercontent.com/erickatwork/"
-       "CrowdStrike-Falcon-Events-Data-Dictionary/main/data/2026-06-02/sensor_events.csv")
+       "CrowdStrike-Falcon-Events-Data-Dictionary/main/data/current/sensor_events.csv")
 events = pd.read_csv(URL)
 
 # Build documents for a vector store / RAG index
@@ -53,23 +61,32 @@ print(len(docs), "Falcon event documents ready for embedding")
 
 See [`llms.txt`](llms.txt) for an AI-agent-friendly map of this repository.
 
+**Ready-made AI instructions** (the data fits in one context window — no RAG needed):
+
+- [`skills/crowdstrike-falcon-events/`](skills/crowdstrike-falcon-events/SKILL.md) — a **Claude Skill** that auto-loads when you ask about Falcon events (Claude Code / Desktop / API).
+- [`prompts/system-prompt.md`](prompts/system-prompt.md) — a **copy-paste system prompt** for any LLM (ChatGPT, Gemini, etc.).
+
 ---
 
 ## 📁 What's inside
 
 ```
 data/
+  current/                     # auto-mirror of the newest snapshot (stable raw URLs)
+    sensor_events.csv
+    sensor_events.md
+    SOURCE.md                  # which dated snapshot this mirrors
   2026-06-02/                  # versioned snapshot (ISO date)
     Events Full Reference.pdf  # original CrowdStrike export
-    sensor_events.csv          # 998 events: header, description, platforms
+    sensor_events.csv          # events: header, description, platforms
     sensor_events.md           # same data + table of contents + summary table
   2025-10-24/                  # previous snapshot (for diffing changes over time)
 app/
-  extract_events.py            # PDF -> CSV + Markdown extractor
+  extract_events.py            # PDF -> CSV + Markdown extractor (also refreshes current/ + docs)
   examine_pdf.py               # inspect / search the raw PDF
 ```
 
-Each snapshot is kept in its own ISO-dated directory so you can **diff the schema between releases** and track when events are added, removed, or change platform support.
+Each snapshot is kept in its own ISO-dated directory so you can **diff the schema between releases** and track when events are added, removed, or change platform support. `data/current/` is generated automatically and should not be edited by hand.
 
 ## 🔎 Data format
 
@@ -83,7 +100,7 @@ ActiveDirectoryAccountDisabled,"Indicates the subject account has been disabled.
 
 ### Markdown
 
-- Linked table of contents for all 998 events
+- Linked table of contents for every event
 - A summary table (event, description, platforms)
 - A detailed section per event
 
@@ -101,7 +118,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh   # macOS/Linux
 uv run app/extract_events.py
 ```
 
-Outputs `sensor_events.csv` and `sensor_events.md` next to the PDF.
+Outputs `sensor_events.csv` and `sensor_events.md` next to the PDF. When the PDF you extract is the **newest** dated snapshot, the extractor also self-updates the repo: it refreshes `data/current/`, the README badges and "Latest snapshot" line, and `llms.txt` — so a new export is the only manual step.
 
 ```bash
 # Point at a specific PDF
